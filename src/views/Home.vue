@@ -78,6 +78,7 @@ export default {
       $(window).unbind("scroll",this.scrollToLoad())
     },
     scrollToLoad: function(){
+      console.log('绑定滚动事件')
       let self = this
       $(window).scroll(function () {
         let scrollTop = $(this).scrollTop()
