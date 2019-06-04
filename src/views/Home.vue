@@ -149,7 +149,7 @@ export default {
     
   }
   #main{
-    width 3.43rem;
+    width 343px;
     background #fff;
     border-radius: 0.1rem;
     position absolute;
