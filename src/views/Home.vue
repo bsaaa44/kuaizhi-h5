@@ -56,17 +56,21 @@ export default {
     RobotInfoBlock
   },
   created(){
+    console.log('created')
     let vConsole = new VConsole()
     if(this.checkWxBrowser()){
 
     }
-    console.log()
     this.showLoading = true
     this.scrollToLoad()
     this.getDetail()
     this.getList()
   },
+  deactivated(){
+    console.log('deactivated')
+  },
   beforeDestroy(){
+    console.log('beforeDestroy')
     this.removeScroll()
   },
   methods:{
@@ -79,12 +83,8 @@ export default {
         let scrollTop = $(this).scrollTop()
         let scrollHeight = $(document).height()
         let windowHeight = $(this).height()
-        console.log('scrollHeight',scrollHeight)
-        console.log('scrollTop + windowHeight',scrollTop + windowHeight)
-        console.log('this.loading',self.loading)
         if (scrollTop + windowHeight>= scrollHeight - 200&&!self.loading) {
           self.loading = true
-          console.log('进来了')
           self.getList()
         }
       })
