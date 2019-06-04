@@ -21,6 +21,10 @@
         </div>
         <div class='divide-line'></div>
         <comment-item class='comment-item' v-for='(item,index) in list' :item='item' :key='index'/>
+        <infinite-loading @infinite="onInfinite" ref="infiniteLoading" spinner="bubbles">
+          <span slot="no-more"></span> 
+          <span slot="no-results"></span>     
+        </infinite-loading>
       </div>
     </div>
     <loading v-if='showLoading'></loading>
@@ -33,6 +37,7 @@ import Loading from '../components/Loading'
 import CardItem from "../components/CardItem.vue"
 import RobotInfoBlock from "../components/RobotInfoBlock.vue"
 import CommentItem from "../components/CommentItem.vue"
+import InfiniteLoading from 'vue-infinite-loading';
 export default {
   data(){
     return{
@@ -40,7 +45,6 @@ export default {
       info: '',
       list: [],
       currentPage: 1,
-      loading: false,
       showLoading: false
     }
   },
@@ -48,7 +52,8 @@ export default {
     CardItem,
     RobotInfoBlock,
     CommentItem,
-    Loading
+    Loading,
+    InfiniteLoading
   },
   created(){
     this.id = this.$route.query.id
@@ -56,27 +61,18 @@ export default {
     this.$nextTick(()=>{
       this.getInfo()
       this.getList()
-      this.scrollToLoad()
     })
   },
-  beforeDestroy(){
-    this.removeScroll()
-  },
   methods: {
-    removeScroll: function(){
-      $(window).unbind("scroll",this.scrollToLoad())
-    },
-     scrollToLoad: function(){
-      let self = this
-      $(window).scroll(function () {
-        let scrollTop = $(this).scrollTop()
-        let scrollHeight = $(document).height()
-        let windowHeight = $(this).height()
-        if (scrollTop + windowHeight === scrollHeight&&!self.loading) {
-          console.log('进来了')
-          // this.loading = true
-          self.getList()
+    onInfinite: function($state){
+      this.getList().then((res)=>{
+        if(res.data.list.length>0){
+          $state.loaded();
+        }else{
+          $state.complete();
         }
+      }).catch(()=>{
+        $state.complete();
       })
     },
     getInfo: function(){
@@ -93,26 +89,25 @@ export default {
       })
     },
     getList: function(){
-      this.loading = true
-      let data = {
-        page: this.currentPage,
-        type: 0,
-        target_id: this.id
-      }
-      this.$utils.axiosRequest('POST','comment/list','',data,res=>{
-        if(this.list.length <= 0){
-          this.list = res.data.list
-        }else{
-          this.list = this.list.concat(res.data.list)
+      return new Promise((resolve,reject)=>{
+        let data = {
+          page: this.currentPage,
+          type: 0,
+          target_id: this.id
         }
-        if(res.data.list.length>0){
-          ++this.currentPage 
-        }
-        this.$nextTick((()=>{
-          this.loading = false
-        }))
-      },res=>{
-         this.loading = false
+        this.$utils.axiosRequest('POST','comment/list','',data,res=>{
+          if(this.list.length <= 0){
+            this.list = res.data.list
+          }else{
+            this.list = this.list.concat(res.data.list)
+          }
+          if(res.data.list.length>0){
+            ++this.currentPage 
+          }
+          resolve(res)
+        },res=>{
+          reject(res)
+        })
       })
     }
   }

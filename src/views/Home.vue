@@ -23,6 +23,10 @@
         <div class='topic-list'>
           <h2>主题动态</h2>
           <card-item class='card-item' v-for='(item,index) in list' :key='index' :item='item' :list='list' :index='index'/>
+          <infinite-loading @infinite="onInfinite" spinner="bubbles">  
+            <span slot="no-more"></span> 
+            <span slot="no-results"></span>     
+          </infinite-loading>
         </div>
       </div>
     </div>
@@ -35,8 +39,8 @@
 import $ from "jquery";
 import Loading from '../components/Loading'
 import CardItem from "../components/CardItem.vue"
-import VConsole from 'vconsole/dist/vconsole.min.js'
 import RobotInfoBlock from "../components/RobotInfoBlock.vue"
+import InfiniteLoading from 'vue-infinite-loading';
 
 export default {
   data(){
@@ -53,41 +57,27 @@ export default {
   components:{
     CardItem,
     Loading,
-    RobotInfoBlock
+    RobotInfoBlock,
+    InfiniteLoading
   },
   created(){
-    console.log('created')
-    let vConsole = new VConsole()
     if(this.checkWxBrowser()){
 
     }
     this.showLoading = true
-    this.scrollToLoad()
     this.getDetail()
     this.getList()
   },
-  deactivated(){
-    console.log('deactivated')
-  },
-  beforeDestroy(){
-    console.log('beforeDestroy')
-    this.removeScroll()
-  },
   methods:{
-    removeScroll: function(){
-      $(window).unbind("scroll",this.scrollToLoad())
-    },
-    scrollToLoad: function(){
-      console.log('绑定滚动事件')
-      let self = this
-      $(window).scroll(function () {
-        let scrollTop = $(this).scrollTop()
-        let scrollHeight = $(document).height()
-        let windowHeight = $(this).height()
-        if (scrollTop + windowHeight>= scrollHeight - 200&&!self.loading) {
-          self.loading = true
-          self.getList()
+    onInfinite: function($state){
+      this.getList().then((res)=>{
+        if(res.data.list.length>0){
+          $state.loaded();
+        }else{
+          $state.complete();
         }
+      }).catch((res)=>{
+        $state.complete();
       })
     },
     getDetail: function(){
@@ -104,25 +94,25 @@ export default {
       })
     },
     getList: function(){
-      this.loading = true
-      let data = {
-        topic_id: 'Nwl74MOXJKZA1',
-        page: this.currentPage
-      }
-      this.$utils.axiosRequest('POST','topic/cards','',data,res=>{
-        if(res.data.list.length>0){
-          if(this.list.length == 0){
-            this.list = res.data.list
-            ++this.currentPage
-          }else{
-            this.list = this.list.concat(res.data.list)
-             ++this.currentPage
-          }
+      return new Promise((resolve,reject)=>{
+        let data = {
+          topic_id: 'Nwl74MOXJKZA1',
+          page: this.currentPage
         }
-        this.loading = false
-        // this.info = res.data.info
-      },res=>{
-        this.loading = false
+        this.$utils.axiosRequest('POST','topic/cards','',data,res=>{
+          if(res.data.list.length>0){
+            if(this.list.length == 0){
+              this.list = res.data.list
+              ++this.currentPage
+            }else{
+              this.list = this.list.concat(res.data.list)
+               ++this.currentPage
+            }
+          }
+          resolve(res)
+        },res=>{
+          reject(res)
+        })
       })
     },
     checkWxBrowser: function(){
