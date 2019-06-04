@@ -151,7 +151,8 @@ export default {
     
   }
   #main{
-    width 3.43rem;
+    width 91.47%
+    // width 3.43rem;
     // width 375px;
     background #fff;
     border-radius: 0.1rem;

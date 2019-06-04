@@ -130,7 +130,8 @@ export default {
     padding-bottom 0.16rem
   }
   .robot-contain{
-    width 3.43rem;
+    width 91.47%
+    // width 3.43rem;
     background #fff;
     box-shadow: 0 0.02rem 0.1rem 0 rgba(218, 218, 218, 0.5)
     border-radius 0.1rem
@@ -174,7 +175,8 @@ export default {
     padding: 0 0.12rem
   }
   .robot-info-block{
-    width 3.43rem;
+    width 91.47%
+    // width 3.43rem;
     height 0.56rem;
     background #fff;
     box-shadow 0 0.02rem 0.1rem 0 rgba(218, 218, 218, 0.5)
