@@ -1,31 +1,34 @@
 <template>
-  <div class="home" v-if='info!=""'>
-    <div class='background-image-block'>
-      <div class='bg' :style="'background-image: url('+info.icon+')'"></div>
-    </div>
-    <div id='main'>
-      <div class='header-block'>
-        <img class='avatar' :src='info.icon'/>
-        <button class='subscript-btn'>订阅</button>
+  <div>  
+    <div class="home" v-if='info!=""'>
+      <div class='background-image-block'>
+        <div class='bg' :style="'background-image: url('+info.icon+')'"></div>
       </div>
-      <div class='info-block'>
-        <h1 class='title'>{{info.name}}</h1>
-        <p class='desc'>{{info.description}}</p>
-      </div>
-      <robot-info-block :robots="info.robots" class='robot-info-block'/>
-      <div class='owner-info-block'>
-        <img class='avatar' :src='info.owner.avatar'/>
-        <span class='name'>{{info.owner.name}}</span>
-        <span class='label'>创建</span>
-      </div>
-      <div class='divide-line'></div>
-      <div class='topic-list'>
-        <h2>主题动态</h2>
-        <card-item class='card-item' v-for='(item,index) in list' :key='index' :item='item' :list='list' :index='index'/>
+      <div id='main'>
+        <div class='header-block'>
+          <img class='avatar' :src='info.icon'/>
+          <button class='subscript-btn'>订阅</button>
+        </div>
+        <div class='info-block'>
+          <h1 class='title'>{{info.name}}</h1>
+          <p class='desc'>{{info.description}}</p>
+        </div>
+        <robot-info-block :robots="info.robots" class='robot-info-block'/>
+        <div class='owner-info-block'>
+          <img class='avatar' :src='info.owner.avatar'/>
+          <span class='name'>{{info.owner.name}}</span>
+          <span class='label'>创建</span>
+        </div>
+        <div class='divide-line'></div>
+        <div class='topic-list'>
+          <h2>主题动态</h2>
+          <card-item class='card-item' v-for='(item,index) in list' :key='index' :item='item' :list='list' :index='index'/>
+        </div>
       </div>
     </div>
     <loading v-if='showLoading'></loading>
   </div>
+
 </template>
 
 <script>
@@ -76,10 +79,11 @@ export default {
         let scrollTop = $(this).scrollTop()
         let scrollHeight = $(document).height()
         let windowHeight = $(this).height()
-        // console.log(scrollHeight)
-        // console.log('scrollTop + windowHeight',scrollTop + windowHeight)
-        if (scrollTop + windowHeight>= scrollHeight - 200&&!this.loading) {
-          this.loading = true
+        console.log('scrollHeight',scrollHeight)
+        console.log('scrollTop + windowHeight',scrollTop + windowHeight)
+        console.log('this.loading',self.loading)
+        if (scrollTop + windowHeight>= scrollHeight - 200&&!self.loading) {
+          self.loading = true
           console.log('进来了')
           self.getList()
         }

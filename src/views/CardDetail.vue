@@ -1,25 +1,27 @@
 <template>
-  <div class='page' v-if='info!=""'>
-    <div class='header-block'>
-      <div class='robot-contain'>
-        <div class='info-block'>
-          <img :src='info.topic.icon' class='avatar'/>
-          <div class='middle'>
-            <h1 class='title'>{{info.topic.name}}</h1>
-            <p class='time'>{{info.created_at}}</p>  
+  <div>
+    <div class='page' v-if='info!=""'>
+      <div class='header-block'>
+        <div class='robot-contain'>
+          <div class='info-block'>
+            <img :src='info.topic.icon' class='avatar'/>
+            <div class='middle'>
+              <h1 class='title'>{{info.topic.name}}</h1>
+              <p class='time'>{{info.created_at}}</p>  
+            </div>  
+            <button class='subscript-btn'>订阅</button>
           </div>  
-          <button class='subscript-btn'>订阅</button>
-        </div>  
-        <card-item :item='info' :index='0' :showTimeBlock='false' :isDetailPage='true' class='card-item'/>
-      </div> 
-      <robot-info-block class='robot-info-block' :robots='info.fromRobots'/> 
-    </div>  
-    <div class='comment-block' v-if='info.commentsCount>0'>
-      <div class='title-block'>
-        评论{{info.commentsCount>0?"·"+info.commentsCount:""}}
+          <card-item :item='info' :index='0' :showTimeBlock='false' :isDetailPage='true' class='card-item'/>
+        </div> 
+        <robot-info-block class='robot-info-block' :robots='info.fromRobots'/> 
+      </div>  
+      <div class='comment-block' v-if='info.commentsCount>0'>
+        <div class='title-block'>
+          评论{{info.commentsCount>0?"·"+info.commentsCount:""}}
+        </div>
+        <div class='divide-line'></div>
+        <comment-item class='comment-item' v-for='(item,index) in list' :item='item' :key='index'/>
       </div>
-      <div class='divide-line'></div>
-      <comment-item class='comment-item' v-for='(item,index) in list' :item='item' :key='index'/>
     </div>
     <loading v-if='showLoading'></loading>
   </div>
@@ -70,7 +72,7 @@ export default {
         let scrollTop = $(this).scrollTop()
         let scrollHeight = $(document).height()
         let windowHeight = $(this).height()
-        if (scrollTop + windowHeight === scrollHeight&&!this.loading) {
+        if (scrollTop + windowHeight === scrollHeight&&!self.loading) {
           console.log('进来了')
           // this.loading = true
           self.getList()
