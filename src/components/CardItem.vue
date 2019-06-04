@@ -214,6 +214,9 @@ export default {
     display flex;
     flew-flow row
     align-items center
+    appearance: none !important;
+    -moz-appearance: none;
+    -webkit-appearance: none;
   }
   .item-block .tools-block .img-finger{
     width 0.16rem
