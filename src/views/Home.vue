@@ -149,14 +149,14 @@ export default {
     
   }
   #main{
-    width 343px;
+    // width 3.43rem;
+    width 375px;
     background #fff;
     border-radius: 0.1rem;
     position absolute;
     top: 0.92rem;
     left 50%
     transform translateX(-50%);
-    height 400px;
     padding 0 0.12rem
     box-sizing border-box
   }
