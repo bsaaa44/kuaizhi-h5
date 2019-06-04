@@ -162,7 +162,7 @@ export default {
   .item-block .website-block{
     margin-top 0.12rem
     background: #F7F8FD;
-    width 3.19rem;
+    width 100%;
     height 0.92rem
     display flex;
     flex-flow: row;
