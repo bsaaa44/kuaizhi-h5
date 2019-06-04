@@ -158,7 +158,7 @@ export default {
     left 50%
     transform translateX(-50%);
     padding 0 0.12rem
-    // box-sizing border-box
+    box-sizing border-box
   }
   #main .header-block{
     position relative
