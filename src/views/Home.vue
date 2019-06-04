@@ -76,7 +76,10 @@ export default {
         let scrollTop = $(this).scrollTop()
         let scrollHeight = $(document).height()
         let windowHeight = $(this).height()
-        if (scrollTop + windowHeight === scrollHeight&&!this.loading) {
+        // console.log(scrollHeight)
+        // console.log('scrollTop + windowHeight',scrollTop + windowHeight)
+        if (scrollTop + windowHeight>= scrollHeight - 200&&!this.loading) {
+          this.loading = true
           console.log('进来了')
           self.getList()
         }
