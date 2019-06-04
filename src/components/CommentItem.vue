@@ -92,6 +92,8 @@ export default {
     align-items center
     font-size 11px;
     color #999
+    border 0
+    background #fff
   }
   .card-item .right-container .info-block .zan-button .img-zan{
     width 0.16rem;

@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import $ from "jquery";
 import Loading from '../components/Loading'
 import CardItem from "../components/CardItem.vue"
 import RobotInfoBlock from "../components/RobotInfoBlock.vue"
