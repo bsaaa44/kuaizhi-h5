@@ -14,6 +14,7 @@
     "es6-promise": "^4.2.6",
     "jquery": "^3.4.1",
     "vant": "^1.6.21",
+    "vconsole": "^3.3.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "weixin-js-sdk": "^1.4.0-test"

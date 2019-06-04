@@ -32,6 +32,7 @@
 import $ from "jquery";
 import Loading from '../components/Loading'
 import CardItem from "../components/CardItem.vue"
+import VConsole from 'vconsole/dist/vconsole.min.js'
 import RobotInfoBlock from "../components/RobotInfoBlock.vue"
 
 export default {
@@ -52,6 +53,7 @@ export default {
     RobotInfoBlock
   },
   created(){
+    let vConsole = new VConsole()
     if(this.checkWxBrowser()){
 
     }
@@ -149,7 +151,7 @@ export default {
     
   }
   #main{
-    // width 3.43rem;
+    width 3.43rem;
     // width 375px;
     background #fff;
     border-radius: 0.1rem;
