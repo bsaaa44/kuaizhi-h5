@@ -21,11 +21,13 @@
       <div class='divide-line'></div>
       <comment-item class='comment-item' v-for='(item,index) in list' :item='item' :key='index'/>
     </div>
+    <loading v-if='showLoading'></loading>
   </div>
 </template>
 
 <script>
 import $ from "jquery";
+import Loading from '../components/Loading'
 import CardItem from "../components/CardItem.vue"
 import RobotInfoBlock from "../components/RobotInfoBlock.vue"
 import CommentItem from "../components/CommentItem.vue"
@@ -36,16 +38,19 @@ export default {
       info: '',
       list: [],
       currentPage: 1,
-      loading: false
+      loading: false,
+      showLoading: false
     }
   },
   components:{
     CardItem,
     RobotInfoBlock,
-    CommentItem
+    CommentItem,
+    Loading
   },
   created(){
     this.id = this.$route.query.id
+    this.showLoading = true
     this.$nextTick(()=>{
       this.getInfo()
       this.getList()
@@ -78,7 +83,12 @@ export default {
       }
       this.$utils.axiosRequest('POST','feed/card/info','',data,res=>{
         this.info = res.data.info
-      },res=>{})
+        this.$nextTick(()=>{
+          this.showLoading = false
+        })
+      },res=>{
+        this.showLoading = false
+      })
     },
     getList: function(){
       this.loading = true

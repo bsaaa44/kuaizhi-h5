@@ -24,11 +24,13 @@
         <card-item class='card-item' v-for='(item,index) in list' :key='index' :item='item' :list='list' :index='index'/>
       </div>
     </div>
+    <loading v-if='showLoading'></loading>
   </div>
 </template>
 
 <script>
 import $ from "jquery";
+import Loading from '../components/Loading'
 import CardItem from "../components/CardItem.vue"
 import RobotInfoBlock from "../components/RobotInfoBlock.vue"
 
@@ -37,6 +39,7 @@ export default {
     return{
       imageWidth: 0,
       scrollLoading: false,
+      showLoading: false,
       info: '',
       currentPage: 1,
       list: [],
@@ -45,13 +48,15 @@ export default {
   },
   components:{
     CardItem,
+    Loading,
     RobotInfoBlock
   },
   created(){
     if(this.checkWxBrowser()){
-      
+
     }
     console.log()
+    this.showLoading = true
     this.scrollToLoad()
     this.getDetail()
     this.getList()
@@ -81,7 +86,12 @@ export default {
       }
       this.$utils.axiosRequest('POST','topic/info','',data,res=>{
         this.info = res.data.info
-      },res=>{})
+        this.$nextTick(()=>{
+          this.showLoading = false
+        })
+      },res=>{
+        this.showLoading = false
+      })
     },
     getList: function(){
       this.loading = true
