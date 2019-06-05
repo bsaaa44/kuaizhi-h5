@@ -81,7 +81,7 @@ export default {
     },
     getDetail: function(){
       let data = {
-        topic_id: 'Nwl74MOXJKZA1'
+        topic_id: 'd8jpRyZP4Wl7A'
       }
       this.$utils.axiosRequest('POST','topic/info','',data,res=>{
         this.info = res.data.info
@@ -95,7 +95,7 @@ export default {
     getList: function(){
       return new Promise((resolve,reject)=>{
         let data = {
-          topic_id: 'Nwl74MOXJKZA1',
+          topic_id: 'd8jpRyZP4Wl7A',
           page: this.currentPage
         }
         this.$utils.axiosRequest('POST','topic/cards','',data,res=>{

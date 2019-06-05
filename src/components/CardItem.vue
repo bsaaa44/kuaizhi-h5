@@ -13,6 +13,14 @@
       v-for='(it,idx) in item.images' :key='idx'>
         <img :src='it' :class='{"image-1":true}'/>
       </div> -->
+    <div class='video-block' v-if='item.video&&item.video!=""'>
+      <video controls="controls" :poster="item.video_thumb_img"
+      x-webkit-airplay="true" x5-video-player-fullscreen="true"
+      playsinline="true" webkit-playsinline
+      x5-video-player-typ="h5">
+        <source type="application/x-mpegURL" :src="item.video">
+      </video>
+    </div>
     <div class='images-block' v-if='item.images.length>0'>
       <template  v-for='(it,idx) in item.images' >
         <template v-if='item.images.length>1'>
@@ -102,6 +110,12 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  video{
+    width 100%
+    height 1.48rem
+    border-radius 0.04rem
+    margin-top 0.08rem
+  }
   .item-block{
     // margin-top 0.19rem
   }
