@@ -35,7 +35,8 @@
             }'
           :key='idx' @click.stop>
             <div 
-            :style="'background-image: url('+it+')'"
+            :style="'background-image: url('+it+'/thumb'+')'"
+            @click='preview(item.images,idx)'
             :class='{
               "image-4":item.images.length>1}
             '>
@@ -44,7 +45,7 @@
         </template>
         <template v-if="item.images.length==1">
           <div class='image-item' :key='idx'>
-            <img :src='it' class='image-1' />
+            <img :src='it+"/thumb"' class='image-1' @click='preview(item.images,idx)' @click.stop/>
           </div>
         </template>
       </template>
@@ -84,6 +85,14 @@ export default {
     this.imageWidth = document.body.clientWidth
   },
   methods:{
+    preview: function(images,index){
+      console.log('images',images)
+      console.log('index',index)
+      this.$imagePreview({
+        images,
+        index
+      })
+    },
     navToDetail: function(id){
       this.$router.push({
         name: 'cardDetail',
