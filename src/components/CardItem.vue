@@ -36,16 +36,16 @@
           :key='idx' @click.stop>
             <div 
             :style="'background-image: url('+it+'/thumb'+')'"
-            @click='preview(item.images,idx)'
             :class='{
               "image-4":item.images.length>1}
-            '>
+            '
+            @click='previewImage(item.images,idx)'>
             </div>
           </div>
         </template>
         <template v-if="item.images.length==1">
           <div class='image-item' :key='idx'>
-            <img :src='it+"/thumb"' class='image-1' @click='preview(item.images,idx)' @click.stop/>
+            <img :src='it+"/thumb"' class='image-1' @click='previewImage(item.images,idx)' @click.stop/>
           </div>
         </template>
       </template>
@@ -75,6 +75,7 @@
 </template>
 
 <script>
+import { ImagePreview } from 'vant';
 export default {
   data(){
     return{
@@ -85,13 +86,14 @@ export default {
     this.imageWidth = document.body.clientWidth
   },
   methods:{
-    preview: function(images,index){
-      console.log('images',images)
-      console.log('index',index)
-      this.$imagePreview({
+    previewImage:function(images,index){
+      ImagePreview({
         images,
-        index
-      })
+        startPosition: index,
+        onClose() {
+          // do something
+        }
+      });
     },
     navToDetail: function(id){
       this.$router.push({
