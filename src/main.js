@@ -7,7 +7,8 @@ import router from "./router";
 import axios from 'axios'
 import global from './components/Global.vue'
 import utils from './assets/js/utils.js'
-import { Loading,Popup,Toast,ImagePreview } from 'vant';
+import { Loading,Popup,Toast } from 'vant';
+import VuePreview from 'vue-preview'
 
 import './assets/css/reset.css'
 import './assets/css/global.css'
@@ -19,7 +20,7 @@ axios.defaults.headers.common['token']='asdfasdfasdf'
 Vue.use(Loading);
 Vue.use(Popup);
 Vue.use(Toast);
-Vue.use(ImagePreview);
+Vue.use(VuePreview)
 
 Vue.prototype.$utils = utils
 Vue.prototype.$ajax = axios

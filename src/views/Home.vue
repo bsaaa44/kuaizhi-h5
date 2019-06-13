@@ -44,6 +44,7 @@ import InfiniteLoading from 'vue-infinite-loading';
 export default {
   data(){
     return{
+      topicId: 0,
       imageWidth: 0,
       scrollLoading: false,
       showLoading: false,
@@ -60,12 +61,16 @@ export default {
     InfiniteLoading
   },
   created(){
+
     if(this.checkWxBrowser()){
 
     }
+    this.topicId = this.$route.query.id
     this.showLoading = true
-    this.getDetail()
-    this.getList()
+    this.$nextTick(()=>{
+      this.getDetail()
+      this.getList()
+    })
   },
   methods:{
     onInfinite: function($state){
@@ -81,7 +86,7 @@ export default {
     },
     getDetail: function(){
       let data = {
-        topic_id: 'Nwl74MOXJKZA1'
+        topic_id: this.topicId
       }
       this.$utils.axiosRequest('POST','topic/info','',data,res=>{
         this.info = res.data.info
@@ -95,10 +100,14 @@ export default {
     getList: function(){
       return new Promise((resolve,reject)=>{
         let data = {
-          topic_id: 'Nwl74MOXJKZA1',
+          topic_id: this.topicId,
           page: this.currentPage
         }
         this.$utils.axiosRequest('POST','topic/cards','',data,res=>{
+          // let rxp = /<a-link href="(.*?)">(.*?)<\/a-link>/gi
+          // for(let i of res.data.list){
+          //   i.text = i.text.replace(rxp,"<a href='$1' style='color:#4891E1'>$2</a>")
+          // }
           if(res.data.list.length>0){
             if(this.list.length == 0){
               this.list = res.data.list
@@ -142,6 +151,7 @@ export default {
     width 120%;
     height 120%
     background-position center;
+    background-size: cover;
     // background-attachment fixed
     background-repeat no-repeat;
     // background-size:100% 90%;

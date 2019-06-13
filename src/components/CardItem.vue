@@ -4,7 +4,7 @@
       <span>{{item.created_at}}</span>
       <img src='../assets/more.png' class='img-more'/>
     </div>
-    <div class='content'>{{item.text}}</div>
+    <div class='content' v-html="item.text"></div>
     <!-- <div class='images-block' v-if='item.images.length>0'>
       <div :class='{
                     "image-item": true,
@@ -35,17 +35,16 @@
             }'
           :key='idx' @click.stop>
             <div 
-            :style="'background-image: url('+it+'/thumb'+')'"
+            :style="it | backgroundAddThumb"
             :class='{
               "image-4":item.images.length>1}
-            '
-            @click='previewImage(item.images,idx)'>
+            '>
             </div>
           </div>
         </template>
         <template v-if="item.images.length==1">
           <div class='image-item' :key='idx'>
-            <img :src='it+"/thumb"' class='image-1' @click='previewImage(item.images,idx)' @click.stop/>
+            <img :src='it | addThumb' class='image-1' />
           </div>
         </template>
       </template>
@@ -75,7 +74,6 @@
 </template>
 
 <script>
-import { ImagePreview } from 'vant';
 export default {
   data(){
     return{
@@ -84,17 +82,10 @@ export default {
   },
   created(){
     this.imageWidth = document.body.clientWidth
+    let rxp = /<a-link href="(.*?)">(.*?)<\/a-link>/gi
+    item.text = item.text.replace(rxp,"<a href='$1' style='color:#4891E1'>$2</a>")
   },
   methods:{
-    previewImage:function(images,index){
-      ImagePreview({
-        images,
-        startPosition: index,
-        onClose() {
-          // do something
-        }
-      });
-    },
     navToDetail: function(id){
       this.$router.push({
         name: 'cardDetail',
@@ -102,6 +93,22 @@ export default {
           id
         }
       })
+    }
+  },
+  filters:{
+    backgroundAddThumb: function(value){
+      if(value.indexOf('cdn.sync163.com')>=0){
+        return 'background-image: url('+value+'/thumb)'
+      }else{
+        return 'background-image: url('+value+')'
+      }
+    },
+    addThumb: function(value){
+      if(value.indexOf('cdn.sync163.com')>=0){
+        return value+'/thumb'
+      }else{
+        return value
+      }
     }
   },
   props:{
@@ -144,6 +151,7 @@ export default {
     height 0.2rem
   }
   .item-block .content{
+    white-space pre;
     margin-top 0.15rem
     font-size 14px;
     line-height 21px;
