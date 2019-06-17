@@ -14,7 +14,7 @@ import VueLazyload from 'vue-lazyload'
 import './assets/css/reset.css'
 import './assets/css/global.css'
 
-axios.defaults.baseURL = 'http://dev.kz.sync163.com/'
+axios.defaults.baseURL = 'http://dev.kz.sync163.com/api'
 // axios.defaults.baseURL = '/api'
 axios.defaults.headers.common['token']='asdfasdfasdf'
 
