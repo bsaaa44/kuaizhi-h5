@@ -22,7 +22,8 @@
       </video>
     </div>
     <div class='images-block' v-if='item.images.length>1' @click.stop>
-      <img v-lazy="it" v-for="(it,idx) in item.images" :key="idx" :class="{
+      <img v-lazy="it" v-for="(it,idx) in item.images" :key="idx" preview = '0'
+       :class="{
         'image-type-1':item.images.length!=2&&item.images.length!=1&&(idx>=item.images.length%3),
         'image-type-2':item.images.length%3==2&&idx<item.images.length%3,
         'image-type-3':item.images.length%3===1&&idx<item.images.length%3
@@ -59,7 +60,7 @@
       <!-- </template> -->
     </div>
     <div class='images-block' v-if='item.images.length==1' @click.stop>
-      <img v-lazy="item.images[0]" class='single-image'>
+      <img v-lazy="item.images[0]" class='single-image' preview = '0'>
     </div>
     <a class='website-block' :href='item.url' @click.stop>
       <img class='avatar' :src='item.url_cover'/>

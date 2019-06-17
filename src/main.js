@@ -8,8 +8,9 @@ import axios from 'axios'
 import global from './components/Global.vue'
 import utils from './assets/js/utils.js'
 import { Loading,Popup,Toast } from 'vant';
-import VuePreview from 'vue-preview'
 import VueLazyload from 'vue-lazyload'
+import preview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
 
 import './assets/css/reset.css'
 import './assets/css/global.css'
@@ -21,7 +22,10 @@ axios.defaults.headers.common['token']='asdfasdfasdf'
 Vue.use(Loading);
 Vue.use(Popup);
 Vue.use(Toast);
-Vue.use(VuePreview)
+let options = {
+  fullscreenEl:false
+}
+Vue.use(preview,options)
 Vue.use(VueLazyload,{
   filter: {
     progressive(listener,options){
