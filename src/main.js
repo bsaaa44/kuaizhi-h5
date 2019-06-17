@@ -23,7 +23,8 @@ Vue.use(Loading);
 Vue.use(Popup);
 Vue.use(Toast);
 let options = {
-  fullscreenEl:false
+  fullscreenEl:false,
+  tapToClose: true
 }
 Vue.use(preview,options)
 Vue.use(VueLazyload,{

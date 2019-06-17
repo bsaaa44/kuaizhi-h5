@@ -23,7 +23,7 @@
         <div class='divide-line'></div>
         <div class='topic-list'>
           <h2>主题动态</h2>
-          <card-item class='card-item' v-for='(item,index) in list' :key='index' :item='item' :list='list' :index='index'/>
+          <card-item class='card-item' v-for='(item,index) in list' :key='index' :id='index' :item='item' :list='list' :index='index'/>
           <!-- <infinite-loading @infinite="onInfinite" spinner="bubbles">  
             <span slot="no-more"></span> 
             <span slot="no-results"></span>     
