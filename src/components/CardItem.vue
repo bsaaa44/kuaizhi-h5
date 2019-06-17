@@ -13,7 +13,7 @@
       v-for='(it,idx) in item.images' :key='idx'>
         <img :src='it' :class='{"image-1":true}'/>
       </div> -->
-    <div class='video-block' v-if='item.video&&item.video!=""'>
+    <div class='video-block' v-if='item.video&&item.video!=""' @click.stop>
       <video controls="controls" :poster="item.video_thumb_img"
       x-webkit-airplay="true" x5-video-player-fullscreen="true"
       playsinline="true" webkit-playsinline
@@ -21,7 +21,7 @@
         <source type="application/x-mpegURL" :src="item.video">
       </video>
     </div>
-    <div class='images-block' v-if='item.images.length>1'>
+    <div class='images-block' v-if='item.images.length>1' @click.stop>
       <img v-lazy="it" v-for="(it,idx) in item.images" :key="idx" :class="{
         'image-type-1':item.images.length!=2&&item.images.length!=1&&(idx>=item.images.length%3),
         'image-type-2':item.images.length%3==2&&idx<item.images.length%3,
@@ -58,7 +58,7 @@
         </template> -->
       <!-- </template> -->
     </div>
-    <div class='images-block' v-if='item.images.length==1'>
+    <div class='images-block' v-if='item.images.length==1' @click.stop>
       <img v-lazy="item.images[0]" class='single-image'>
     </div>
     <a class='website-block' :href='item.url' @click.stop>
