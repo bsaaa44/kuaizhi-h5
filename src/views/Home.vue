@@ -1,5 +1,6 @@
 <template>
   <div>  
+    <download-bar/>
     <div class="home" v-if='info!=""'>
       <div class='background-image-block'>
         <div class='bg' :style="'background-image: url('+info.icon+')'"></div>
@@ -15,7 +16,7 @@
         </div>
         <robot-info-block :robots="info.robots" class='robot-info-block'/>
         <div class='owner-info-block'>
-          <img class='avatar' :src='info.owner.avatar'/>
+          <img class='avatar' v-lazy='info.owner.avatar'/>
           <span class='name'>{{info.owner.name}}</span>
           <span class='label'>创建</span>
         </div>
@@ -23,12 +24,13 @@
         <div class='topic-list'>
           <h2>主题动态</h2>
           <card-item class='card-item' v-for='(item,index) in list' :key='index' :item='item' :list='list' :index='index'/>
-          <infinite-loading @infinite="onInfinite" spinner="bubbles">  
+          <!-- <infinite-loading @infinite="onInfinite" spinner="bubbles">  
             <span slot="no-more"></span> 
             <span slot="no-results"></span>     
-          </infinite-loading>
+          </infinite-loading> -->
         </div>
       </div>
+      <button class='open-btn'>App 内打开</button>
     </div>
     <loading v-if='showLoading'></loading>
   </div>
@@ -38,6 +40,7 @@
 <script>
 import Loading from '../components/Loading'
 import CardItem from "../components/CardItem.vue"
+import DownloadBar from "../components/DownloadBar.vue"
 import RobotInfoBlock from "../components/RobotInfoBlock.vue"
 import InfiniteLoading from 'vue-infinite-loading';
 
@@ -57,6 +60,7 @@ export default {
   components:{
     CardItem,
     Loading,
+    DownloadBar,
     RobotInfoBlock,
     InfiniteLoading
   },
@@ -109,6 +113,7 @@ export default {
           //   i.text = i.text.replace(rxp,"<a href='$1' style='color:#4891E1'>$2</a>")
           // }
           if(res.data.list.length>0){
+            res.data.list.splice(0,5)
             if(this.list.length == 0){
               this.list = res.data.list
               ++this.currentPage
@@ -136,6 +141,24 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  .open-btn{
+    position fixed
+    bottom 0.8rem
+    left 50%;
+    transform translateX(-50%)
+    border 0
+    width 1rem
+    height 0.32rem
+    border-radius 0.16rem
+    background #007aff
+    color #fff;
+    font-size 14px
+    display flex;
+    flex-flow row 
+    align-items center
+    justify-content center
+    box-shadow: 0 0 4px 0 rgba(0,0,0,.12);
+  }
   .background-image-block{
     width 100vw
     height 2.44rem;
@@ -194,6 +217,7 @@ export default {
     height 0.6rem
     border-radius 0.03rem
     margin-top -0.16rem
+    object-fit: cover
   }
   #main .info-block{
     margin-top 0.16rem
@@ -226,7 +250,7 @@ export default {
     width 0.2rem;
     height 0.2rem;
     border-radius 50%;
-    margin-right 0.04rem
+    margin-right 0.04rem;
   }
   #main .owner-info-block .name{
     color #333;

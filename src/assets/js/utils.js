@@ -10,7 +10,7 @@ function axiosRequest(method, url, params, data, success, fail) {
     .$ajax({
       method: method,
       url: url,
-      header: { 'Access-Control-Allow-Origin': '*' },
+      headers: { 'Access-Control-Allow-Origin': '*','from': 'h5' },
       dataType: 'jsonp',
       data,
       params

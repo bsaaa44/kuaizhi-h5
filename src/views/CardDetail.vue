@@ -1,5 +1,6 @@
 <template>
   <div>
+    <download-bar/>
     <div class='page' v-if='info!=""'>
       <div class='header-block'>
         <div class='robot-contain'>
@@ -27,6 +28,7 @@
         </infinite-loading>
       </div>
     </div>
+    <button class='open-btn'>App 内打开</button>
     <loading v-if='showLoading'></loading>
   </div>
 </template>
@@ -34,6 +36,7 @@
 <script>
 import Loading from '../components/Loading'
 import CardItem from "../components/CardItem.vue"
+import DownloadBar from "../components/DownloadBar.vue"
 import RobotInfoBlock from "../components/RobotInfoBlock.vue"
 import CommentItem from "../components/CommentItem.vue"
 import InfiniteLoading from 'vue-infinite-loading';
@@ -51,6 +54,7 @@ export default {
     CardItem,
     RobotInfoBlock,
     CommentItem,
+    DownloadBar,
     Loading,
     InfiniteLoading
   },
@@ -114,6 +118,24 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  .open-btn{
+    position fixed
+    bottom 0.8rem
+    left 50%;
+    transform translateX(-50%)
+    border 0
+    width 1rem
+    height 0.32rem
+    border-radius 0.16rem
+    background #007aff
+    color #fff;
+    font-size 14px
+    display flex;
+    flex-flow row 
+    align-items center
+    justify-content center
+    box-shadow: 0 0 4px 0 rgba(0,0,0,.12);
+  }
   .page{
     background #F7F7F7
   }

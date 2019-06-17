@@ -4,7 +4,7 @@
       <span>{{item.created_at}}</span>
       <img src='../assets/more.png' class='img-more'/>
     </div>
-    <div class='content' v-html="item.text"></div>
+    <div class='content' v-html="item.text.replace(/\n/g, '<br>')"></div>
     <!-- <div class='images-block' v-if='item.images.length>0'>
       <div :class='{
                     "image-item": true,
@@ -21,9 +21,18 @@
         <source type="application/x-mpegURL" :src="item.video">
       </video>
     </div>
-    <div class='images-block' v-if='item.images.length>0'>
-      <template  v-for='(it,idx) in item.images' >
-        <template v-if='item.images.length>1'>
+    <div class='images-block' v-if='item.images.length>1'>
+      <img v-lazy="it" v-for="(it,idx) in item.images" :key="idx" :class="{
+        'image-type-1':item.images.length!=2&&item.images.length!=1&&(idx>=item.images.length%3),
+        'image-type-2':item.images.length%3==2&&idx<item.images.length%3,
+        'image-type-3':item.images.length%3===1&&idx<item.images.length%3
+        }" :style="{
+          height: (item.images.length%3===1&&idx<item.images.length%3)?imageWidth/2+'px':'auto',
+          marginBottom: item.images.length>3&&idx<item.images.length-3?'0.05rem':'0'  
+        }"
+        />
+      <!-- <template  v-for='(it,idx) in item.images' > -->
+        <!-- <template v-if='item.images.length>1'>
           <div :class='{
             "image-item": true,
             "image-2":item.images.length==2||((item.images.length==8||item.images.length==5)&&idx>item.images.length-3),
@@ -46,8 +55,11 @@
           <div class='image-item' :key='idx'>
             <img :src='it | addThumb' class='image-1' />
           </div>
-        </template>
-      </template>
+        </template> -->
+      <!-- </template> -->
+    </div>
+    <div class='images-block' v-if='item.images.length==1'>
+      <img v-lazy="item.images[0]" class='single-image'>
     </div>
     <a class='website-block' :href='item.url' @click.stop>
       <img class='avatar' :src='item.url_cover'/>
@@ -82,8 +94,9 @@ export default {
   },
   created(){
     this.imageWidth = document.body.clientWidth
+    console.log(this.imageWidth)
     let rxp = /<a-link href="(.*?)">(.*?)<\/a-link>/gi
-    item.text = item.text.replace(rxp,"<a href='$1' style='color:#4891E1'>$2</a>")
+    this.item.text = this.item.text.replace(rxp,"<a href='$1' style='color:#4891E1'>$2</a>")
   },
   methods:{
     navToDetail: function(id){
@@ -151,47 +164,69 @@ export default {
     height 0.2rem
   }
   .item-block .content{
-    white-space pre;
+    // white-space pre;
     margin-top 0.15rem
     font-size 14px;
     line-height 21px;
     color #333;
+    // word-break:break-all;
+    width 100%;
   }
   .item-block .images-block{
     margin-top 0.12rem;
     display flex;
-    flex-flow: row wrap-reverse;
+    flex-flow: row wrap;
     justify-content space-between;
   }
-  .item-block .images-block .image-item{
-    display: flex;
-    flex-flow row;
-    align-items center;
-    justify-content center;
-    overflow hidden;
-    // flex-grow: 1
+  .item-block .images-block .image-type-1{
+    width 1.03rem;
+    height 1.03rem !important;
+    border-radius: 0.02rem;
+    object-fit: cover
   }
-  .item-block .images-block .image-1{
+  .item-block .images-block .image-type-2{
+    width 1.57rem !important
+    height 1.57rem !important
+    border-radius: 0.02rem;
+    object-fit: cover
+  }
+  .item-block .images-block .image-type-3{
+    width 100%;
+    object-fit: cover
+  }
+  .single-image{
     max-height: 2.16rem
     max-width: 2.3rem
   }
-  .item-block .images-block .image-2{
-    width 1.57rem !important
-    height 1.57rem !important
-  }
-  .item-block .images-block .image-3{
-    width 1.03rem
-    height 1.03rem
-    border-radius: 0.02rem
-  }
-  .item-block .images-block .image-4{
-    width: 100%;
-    height: 100%;
-    // zoom: 40%
-    background-size:cover;
-    background-repeat: no-repeat;
-    background-position center;
-  }
+  // .item-block .images-block .image-item{
+    // display: flex;
+    // flex-flow row;
+    // align-items center;
+    // justify-content center;
+    // overflow hidden;
+    // flex-grow: 1
+  // }
+  // .item-block .images-block .image-1{
+  //   max-height: 2.16rem
+  //   max-width: 2.3rem
+  // }
+  // .item-block .images-block .image-2{
+  //   width 1.57rem !important
+  //   height 1.57rem !important
+  // }
+  // .item-block .images-block .image-3{
+  //   width 1.03rem
+  //   height 1.03rem
+  //   border-radius: 0.02rem
+  // }
+  // .item-block .images-block .image-4{
+  //   width: 100%;
+  //   height: 100%;
+  //   // zoom: 40%
+  //   background-size:cover;
+  //   background-repeat: no-repeat;
+  //   background-position center;
+  // }
   .item-block .website-block{
     margin-top 0.12rem
     background: #F7F8FD;
