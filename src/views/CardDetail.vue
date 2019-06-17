@@ -124,9 +124,10 @@ export default {
     left 50%;
     transform translateX(-50%)
     border 0
-    width 1rem
+    // width 1rem
     height 0.32rem
     border-radius 0.16rem
+    padding 0 0.13rem
     background #007aff
     color #fff;
     font-size 14px

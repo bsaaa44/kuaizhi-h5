@@ -231,7 +231,7 @@ export default {
     margin-top 0.12rem
     background: #F7F8FD;
     width 100%;
-    height 0.92rem
+    // height 0.92rem
     display flex;
     flex-flow: row;
     align-items: center;
@@ -239,7 +239,9 @@ export default {
     box-sizing:border-box;
   }
   .item-block .website-block .avatar{
-    height: 100%;
+    // height: 100%;
+    width 0.66rem
+    height 0.66rem 
     margin-right: 0.08rem
     border-radius: 0.02rem
   }
@@ -247,7 +249,7 @@ export default {
     display flex;
     flex-flow column;
     justify-content space-around;
-    height: 100%
+    height: 0.66rem
   }
   .item-block .website-block .title{
     font-size: 13px;
