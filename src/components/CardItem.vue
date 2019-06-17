@@ -237,6 +237,7 @@ export default {
     align-items: center;
     padding 0.08rem;
     box-sizing:border-box;
+    border-radius 0.04rem
   }
   .item-block .website-block .avatar{
     // height: 100%;

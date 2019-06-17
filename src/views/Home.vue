@@ -113,7 +113,7 @@ export default {
           //   i.text = i.text.replace(rxp,"<a href='$1' style='color:#4891E1'>$2</a>")
           // }
           if(res.data.list.length>0){
-            res.data.list.splice(0,5)
+            res.data.list.splice(res.data.list.length-6,5)
             if(this.list.length == 0){
               this.list = res.data.list
               ++this.currentPage
