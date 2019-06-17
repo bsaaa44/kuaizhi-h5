@@ -248,6 +248,7 @@ export default {
     margin-right: 0.08rem
     border-radius: 0.02rem
     object-fit: cover
+    flex-shrink 0
   }
   .item-block .website-block .info{
     display flex;
