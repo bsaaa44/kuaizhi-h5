@@ -191,12 +191,14 @@ export default {
     object-fit: cover
   }
   .item-block .images-block .image-type-3{
+    border-radius: 0.02rem;
     width 100%;
     object-fit: cover
   }
   .single-image{
     max-height: 2.16rem
     max-width: 2.3rem
+    border-radius: 0.02rem;
   }
   // .item-block .images-block .image-item{
     // display: flex;
@@ -228,7 +230,7 @@ export default {
   //   background-position center;
   // }
   .item-block .website-block{
-    margin-top 0.12rem
+    margin-top 0.08rem
     background: #F7F8FD;
     width 100%;
     // height 0.92rem
@@ -245,6 +247,7 @@ export default {
     height 0.66rem 
     margin-right: 0.08rem
     border-radius: 0.02rem
+    object-fit: cover
   }
   .item-block .website-block .info{
     display flex;
