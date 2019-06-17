@@ -71,11 +71,11 @@
     <div class='tools-block' :style="isDetailPage?'padding:0 0.08rem':''" @click.stop>
       <div class='zan-btn tools-btn'>
         <img src='../assets/finger.png' class='img-finger'/>
-        <span class='count'>{{item.zanCount}}</span>
+        <span class='count' v-if='item.zanCount>0'>{{item.zanCount}}</span>
       </div>
       <div class='comment-btn tools-btn'>
         <img src='../assets/message.png' class='img-message'/>
-        <span class='count'>{{item.commentsCount}}</span>
+        <span class='count' v-if='item.commentsCount>0'>{{item.commentsCount}}</span>
       </div>
       <div class='share-btn tools-btn'>
         <img src='../assets/share.png' class='img-share'/>
