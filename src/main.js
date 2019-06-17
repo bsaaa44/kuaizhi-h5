@@ -24,7 +24,13 @@ Vue.use(Popup);
 Vue.use(Toast);
 let options = {
   fullscreenEl:false,
-  tapToClose: true
+  tapToClose: true,
+  addCaptionHTMLFn: function(item, captionEl, isFake){
+    console.log(item)
+    if(item.src.indexOf('/thumb')>=0){
+      item.src = item.src.replace('/thumb',"")
+    }
+  } 
 }
 Vue.use(preview,options)
 Vue.use(VueLazyload,{
