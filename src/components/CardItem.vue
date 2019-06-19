@@ -94,6 +94,7 @@ export default {
     }
   },
   created(){
+    
     this.imageWidth = document.body.clientWidth
     console.log(this.imageWidth)
     let rxp = /<a-link href="(.*?)">(.*?)<\/a-link>/gi
