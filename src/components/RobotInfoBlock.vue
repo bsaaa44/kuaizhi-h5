@@ -1,5 +1,5 @@
 <template>
-  <div class='owner-block'>
+  <div class='owner-block' @click="handleShowPop"> 
     <div class='avatar-block'>
       <img :class='{"avatar-type-1":robots.length == 1,
                     "avatar-type-2":robots.length>1&&robots.length<5,
@@ -24,6 +24,11 @@ export default {
   data(){
     return{
 
+    }
+  },
+  methods:{
+    handleShowPop: function(){
+      this.$emit("handleShowPop")
     }
   },
   props:["robots"] 

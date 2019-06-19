@@ -5,7 +5,7 @@
       <div class='info-block'>
         <p class='name'>{{item.sender_name}}</p>
         <p class='time'>{{item.created_at}}</p>
-        <button class='zan-button'>
+        <button class='zan-button' @click="handleShowPop">
           <img class='img-zan' src='../assets/finger.png'/>
           <span class='count'>{{item.like_count}}</span>
         </button>
@@ -23,13 +23,13 @@
             </span>
             <span class='content-text'>{{itm.content}}</span>
             <template v-if='itm.image!=""'>
-              <img src='../assets/blue-pic.png' class='img-pic'/>
-              <span class='show-pic-text'>查看图片</span>
+              <img src='../assets/blue-pic.png' class='img-pic' @click="handleShowPop"/>
+              <span class='show-pic-text' @click="handleShowPop">查看图片</span>
             </template>
           </p>
           <div class='fill-block' :key='idx' v-if='item.comments&&idx!=item.comments.length-1'></div>
         </template>
-        <p class='show-more' v-if='item.comments.length>5'>查看所有评论</p>
+        <p class='show-more' v-if='item.comments.length>5' @click="handleShowPop">查看所有评论</p>
       </div>
       <div class='divide-line'></div>
     </div>
@@ -40,6 +40,11 @@
 export default {
   data(){
     return{}
+  },
+  methods:{
+    handleShowPop: function(){
+      this.$emit("handleShowPop")
+    }
   },
   props: {
     item: {

@@ -1,19 +1,51 @@
 <template>
   <div>
-    <div class='download-bar'>
+    <!-- <div class="download-bar" :style="{top:top+'rem'}"> -->
+    <div class="download-bar">
       <img src='../assets/logo.png' class='img-logo'/>
       <div class='info-block'>
         快知App<br>
         <span class='desc'>让信息获取更高效</span>
       </div>
-      <button class='dl-btn'>立即下载</button>
+      <button class='dl-btn' @click="handleShowPop">立即下载</button>
     </div>  
-    
   </div>
 </template>
 
+<script>
+export default {
+  data(){
+    return{
+      top: 0,
+      lastScroll: 0,
+      showAnimate: false
+    }
+  },
+  mounted(){
+    // window.addEventListener('scroll', this.handleScroll)
+  },
+  methods:{
+    handleShowPop: function(){
+      this.$emit("handleShowPop")
+    },
+    handleScroll: function(){
+      let scroll = document.documentElement.scrollTop || document.body.scrollTop
+      if(scroll>this.lastScroll){
+        this.top = -0.6
+      }else{
+        this.top = 0
+      }
+      this.lastScroll = scroll
+    }
+  }  
+}
+</script>
+
+
 <style lang="stylus" scoped>
   .download-bar{
+    // position fixed
+    // left 0;
     width 100%;
     height 0.6rem
     background #f2f2f2
@@ -22,6 +54,8 @@
     align-items center
     padding 0 0.15rem;
     box-sizing border-box
+    z-index 1000
+    transition all 200ms linear
   }
   .download-bar .img-logo{
     width 0.4rem

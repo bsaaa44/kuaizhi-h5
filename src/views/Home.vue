@@ -1,6 +1,7 @@
 <template>
   <div>  
-    <download-bar/>
+    <join-pop @handleClosePop="handleClosePop" v-if='showJoinPop'/>
+    <download-bar @handleShowPop= "handleShowPop"/>
     <div class="home" v-if='info!=""'>
       <div class='background-image-block'>
         <div class='bg' :style="'background-image: url('+info.icon+')'"></div>
@@ -8,13 +9,13 @@
       <div id='main'>
         <div class='header-block'>
           <img class='avatar' :src='info.icon'/>
-          <button class='subscript-btn'>订阅</button>
+          <button class='subscript-btn' @click='handleShowPop'>订阅</button>
         </div>
         <div class='info-block'>
           <h1 class='title'>{{info.name}}</h1>
           <p class='desc'>{{info.description}}</p>
         </div>
-        <robot-info-block :robots="info.robots" class='robot-info-block'/>
+        <robot-info-block :robots="info.robots" class='robot-info-block' @handleShowPop= "handleShowPop"/>
         <div class='owner-info-block'>
           <img class='avatar' v-lazy='info.owner.avatar'/>
           <span class='name'>{{info.owner.name}}</span>
@@ -23,15 +24,16 @@
         <div class='divide-line'></div>
         <div class='topic-list'>
           <h2>主题动态</h2>
-          <card-item class='card-item' v-for='(item,index) in list' :key='index' :id='index' :item='item' :list='list' :index='index'/>
+          <card-item class='card-item' v-for='(item,index) in list' :key='index' :id='index' :item='item' :list='list' :index='index' @handleShowPop= "handleShowPop"/>
           <!-- <infinite-loading @infinite="onInfinite" spinner="bubbles">  
             <span slot="no-more"></span> 
             <span slot="no-results"></span>     
           </infinite-loading> -->
         </div>
       </div>
-      <button class='open-btn'>App 内打开</button>
+      <button class='open-btn' @click='handleShowPop'>App 内打开</button>
     </div>
+    
     <loading v-if='showLoading'></loading>
   </div>
 
@@ -43,6 +45,7 @@ import CardItem from "../components/CardItem.vue"
 import DownloadBar from "../components/DownloadBar.vue"
 import RobotInfoBlock from "../components/RobotInfoBlock.vue"
 import InfiniteLoading from 'vue-infinite-loading';
+import JoinPop from '../components/JoinPop.vue'
 
 export default {
   data(){
@@ -51,6 +54,7 @@ export default {
       imageWidth: 0,
       scrollLoading: false,
       showLoading: false,
+      showJoinPop: false,
       info: '',
       currentPage: 1,
       list: [],
@@ -62,10 +66,10 @@ export default {
     Loading,
     DownloadBar,
     RobotInfoBlock,
-    InfiniteLoading
+    InfiniteLoading,
+    JoinPop
   },
   created(){
-
     if(this.checkWxBrowser()){
 
     }
@@ -77,6 +81,12 @@ export default {
     })
   },
   methods:{
+    handleShowPop: function(){
+      this.showJoinPop = true
+    },
+    handleClosePop: function(){
+      this.showJoinPop = false
+    },
     onInfinite: function($state){
       this.getList().then((res)=>{
         if(res.data.list.length>0){

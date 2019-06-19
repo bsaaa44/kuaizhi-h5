@@ -1,8 +1,8 @@
 <template>
   <div class='item-block' @click='navToDetail(item.id)'>
-    <div class='time-block' v-if='showTimeBlock'>
+    <div class='time-block' v-if='showTimeBlock' @click.stop>
       <span>{{item.created_at}}</span>
-      <img src='../assets/more.png' class='img-more'/>
+      <img src='../assets/more.png' class='img-more' @click="handleShowPop"/>
     </div>
     <div class='content' v-html="item.text.replace(/\n/g, '<br>')"></div>
     <!-- <div class='images-block' v-if='item.images.length>0'>
@@ -62,7 +62,7 @@
     <div class='images-block' v-if='item.images.length==1' @click.stop>
       <img v-lazy="item.images[0]" class='single-image' :preview='id'>
     </div>
-    <a class='website-block' :href='item.url' @click.stop>
+    <a class='website-block' :href='item.url' v-if='item.url&&item.url!=""' @click.stop>
       <img class='avatar' :src='item.url_cover'/>
       <div class='info'>
         <h3 class='title'>{{item.url_title}}</h3>
@@ -70,15 +70,15 @@
       </div>
     </a>
     <div class='tools-block' :style="isDetailPage?'padding:0 0.08rem':''" @click.stop>
-      <div class='zan-btn tools-btn'>
+      <div class='zan-btn tools-btn' @click="handleShowPop">
         <img src='../assets/finger.png' class='img-finger'/>
         <span class='count' v-if='item.zanCount>0'>{{item.zanCount}}</span>
       </div>
-      <div class='comment-btn tools-btn'>
+      <div class='comment-btn tools-btn' @click="handleShowPop">
         <img src='../assets/message.png' class='img-message'/>
         <span class='count' v-if='item.commentsCount>0'>{{item.commentsCount}}</span>
       </div>
-      <div class='share-btn tools-btn'>
+      <div class='share-btn tools-btn' @click="handleShowPop">
         <img src='../assets/share.png' class='img-share'/>
       </div>
     </div>
@@ -100,6 +100,9 @@ export default {
     this.item.text = this.item.text.replace(rxp,"<a href='$1' style='color:#4891E1'>$2</a>")
   },
   methods:{
+    handleShowPop: function(){
+      this.$emit("handleShowPop")
+    },
     navToDetail: function(id){
       this.$router.push({
         name: 'cardDetail',
@@ -309,8 +312,8 @@ export default {
     margin-right 0.08rem
   }
   .item-block .tools-block .img-share{
-    width 0.16rem
-    height 0.16rem
+    width 0.15rem
+    height 0.15rem
   }
   .item-block .tools-block .count {
     font-size 13px;

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <download-bar/>
+    <join-pop @handleClosePop="handleClosePop" v-if='showJoinPop'/>
+    <download-bar @handleShowPop= "handleShowPop"/>
     <div class='page' v-if='info!=""'>
       <div class='header-block'>
         <div class='robot-contain'>
@@ -10,25 +11,31 @@
               <h1 class='title'>{{info.topic.name}}</h1>
               <p class='time'>{{info.created_at}}</p>  
             </div>  
-            <button class='subscript-btn'>订阅</button>
+            <button class='subscript-btn' @click="handleShowPop">订阅</button>
           </div>  
-          <card-item :item='info' :index='0' :showTimeBlock='false' :isDetailPage='true' class='card-item'/>
+          <card-item :item='info' :index='0' :showTimeBlock='false' :isDetailPage='true' class='card-item' @handleShowPop= "handleShowPop"/>
         </div> 
-        <robot-info-block class='robot-info-block' :robots='info.fromRobots'/> 
+        <robot-info-block class='robot-info-block' :robots='info.fromRobots' @handleShowPop= "handleShowPop"/> 
       </div>  
       <div class='comment-block' v-if='info.commentsCount>0'>
         <div class='title-block'>
           评论{{info.commentsCount>0?"·"+info.commentsCount:""}}
         </div>
         <div class='divide-line'></div>
-        <comment-item class='comment-item' v-for='(item,index) in list' :item='item' :key='index'/>
-        <infinite-loading @infinite="onInfinite" ref="infiniteLoading" spinner="bubbles">
+        <comment-item class='comment-item' v-for='(item,index) in list' :item='item' :key='index' @handleShowPop= "handleShowPop"/>
+        <template v-if='showMoreBtn'>
+          <div class='divide-line'></div>
+          <div class='show-more'>
+            查看更多评论
+          </div>
+        </template>
+        <!-- <infinite-loading @infinite="onInfinite" ref="infiniteLoading" spinner="bubbles">
           <span slot="no-more"></span> 
           <span slot="no-results"></span>     
-        </infinite-loading>
+        </infinite-loading> -->
       </div>
     </div>
-    <button class='open-btn'>App 内打开</button>
+    <button class='open-btn' @click="handleShowPop">App 内打开</button>
     <loading v-if='showLoading'></loading>
   </div>
 </template>
@@ -40,6 +47,7 @@ import DownloadBar from "../components/DownloadBar.vue"
 import RobotInfoBlock from "../components/RobotInfoBlock.vue"
 import CommentItem from "../components/CommentItem.vue"
 import InfiniteLoading from 'vue-infinite-loading';
+import JoinPop from '../components/JoinPop.vue'
 export default {
   data(){
     return{
@@ -47,7 +55,9 @@ export default {
       info: '',
       list: [],
       currentPage: 1,
-      showLoading: false
+      showJoinPop: false,
+      showLoading: false,
+      showMoreBtn: false
     }
   },
   components:{
@@ -56,7 +66,8 @@ export default {
     CommentItem,
     DownloadBar,
     Loading,
-    InfiniteLoading
+    InfiniteLoading,
+    JoinPop
   },
   created(){
     this.id = this.$route.query.id
@@ -67,6 +78,12 @@ export default {
     })
   },
   methods: {
+    handleShowPop: function(){
+      this.showJoinPop = true
+    },
+    handleClosePop: function(){
+      this.showJoinPop = false
+    },
     onInfinite: function($state){
       this.getList().then((res)=>{
         if(res.data.list.length>0){
@@ -99,6 +116,10 @@ export default {
           target_id: this.id
         }
         this.$utils.axiosRequest('POST','comment/list','',data,res=>{
+          if(res.data.list.length>5){
+            this.showMoreBtn = true
+          }
+          res.data.list = res.data.list.slice(0,5)
           if(this.list.length <= 0){
             this.list = res.data.list
           }else{
@@ -216,5 +237,15 @@ export default {
   }
   .comment-block .comment-item{
     margin-top 0.15rem
+  }
+  .comment-block .show-more{
+    width 100%;
+    height 0.4rem
+    display flex 
+    flex-flow row 
+    align-items center 
+    justify-content center
+    font-size 14px 
+    color #007aff
   }
 </style>
