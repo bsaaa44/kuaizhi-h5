@@ -46,6 +46,12 @@ Vue.use(VueLazyload,{
   }
 })
 
+Vue.prototype.$preview.on('gettingData',function(index,item){
+  if(item.src.indexOf('/thumb')>=0){
+    item.src = item.src.replace("/thumb","")
+  }
+})
+
 Vue.prototype.$utils = utils
 Vue.prototype.$ajax = axios
 Vue.prototype.$global = global

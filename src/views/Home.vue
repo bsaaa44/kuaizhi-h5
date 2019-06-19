@@ -73,11 +73,7 @@ export default {
     if(this.checkWxBrowser()){
 
     }
-    this.$preview.on('gettingData',function(index,item){
-      if(item.src.indexOf('/thumb')>=0){
-        item.src = item.src.replace("/thumb","")
-      }
-    })
+    // this.
     this.topicId = this.$route.query.id
     this.showLoading = true
     this.$nextTick(()=>{

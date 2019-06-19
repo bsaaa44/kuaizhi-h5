@@ -70,6 +70,11 @@ export default {
     JoinPop
   },
   created(){
+    // this.$preview.on('gettingData',function(index,item){
+    //   if(item.src.indexOf('/thumb')>=0){
+    //     item.src = item.src.replace("/thumb","")
+    //   }
+    // })
     this.id = this.$route.query.id
     this.showLoading = true
     this.$nextTick(()=>{
