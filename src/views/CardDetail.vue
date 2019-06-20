@@ -97,7 +97,7 @@ export default {
           let data = {
             code: this.$route.query.code
           }
-          this.$utils.login(data).then(()=>{
+          this.$utils.login(data).then(res=>{
             sessionStorage.setItem('token',res.data.token)
             // this.$global.hasLogin = true
             this.id = this.$global.cardId

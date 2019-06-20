@@ -40,6 +40,7 @@ Vue.use(VueLazyload,{
 })
 
 Vue.prototype.$preview.on('gettingData',function(index,item){
+  console.log('item',item)
   if(item.src.indexOf('/thumb')>=0){
     item.src = item.src.replace("/thumb","")
   }
