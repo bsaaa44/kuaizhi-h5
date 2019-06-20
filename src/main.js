@@ -15,8 +15,8 @@ import 'vue-photo-preview/dist/skin.css'
 import './assets/css/reset.css'
 import './assets/css/global.css'
 
-axios.defaults.baseURL = 'https://kz.sync163.com'
-// axios.defaults.baseURL = 'http://dev.kz.sync163.com'
+// axios.defaults.baseURL = 'https://kz.sync163.com'
+axios.defaults.baseURL = 'http://dev.kz.sync163.com'
 // axios.defaults.baseURL = '/api'
 axios.defaults.headers.common['token']='asdfasdfasdf'
 
