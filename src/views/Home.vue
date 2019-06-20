@@ -102,9 +102,12 @@ export default {
           }
           this.$utils.login(data).then(()=>{
             this.userInfo = this.$global.userInfo
+            this.topicId = sessionStorage.getItem("topicId")
             console.log('登陆成功')
-            this.getDetail()
-            this.getList()
+            this.$nextTick(()=>{
+              this.getDetail()
+              this.getList()
+            })
           })
         }
       }else{
