@@ -13,12 +13,12 @@ export default {
     }
   },
   created(){
-    if(checkBrowser()=='wx'){
+    if(this.checkBrowser()=='wx'){
       this.showOpenTips = true
-    }else if(checkBrowser()=='safari'){
+    }else if(this.checkBrowser()=='safari'){
       location.href=`com.sinoceanland.yjq://goodsdetail?goodsid=1420331309`
       setTimeout(()=>{
-        if(checkBrowser()=='safari'){
+        if(this.checkBrowser()=='safari'){
           location.href = 'https://apps.apple.com/cn/app/%E7%A5%9E%E9%83%BD%E5%A4%9C%E8%A1%8C%E5%BD%95/id1420331309'
         }
       },1000)
@@ -26,6 +26,7 @@ export default {
   },
   methods:{
     checkBrowser: function(){
+      console.log('进来了')
       let ua = navigator.userAgent.toLowerCase();
       if (ua.match(/MicroMessenger/i) == "micromessenger") {
         return 'wx'
