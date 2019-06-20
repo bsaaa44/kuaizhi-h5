@@ -70,9 +70,10 @@ export default {
     JoinPop
   },
   created(){
-    this.$global.topicId = this.$route.query.id
+    // this.$global.topicId = this.$route.query.id
     this.showLoading = true
     if(this.checkWxBrowser()){
+      sessionStorage.setItem("topicId",this.$route.query.id)
       this.$global.iosUrl = this.$global.hostUrl + this.$route.fullPath
       this.checkCode()
     }else{
@@ -89,7 +90,7 @@ export default {
         this.$global.code = this.$route.query.code
         if(this.$global.userInfo.nickName){
           this.userInfo = this.$global.userInfo
-          this.topicId = this.$global.topicId
+          this.topicId = sessionStorage.getItem("topicId")
           console.log('登陆成功')
           this.$nextTick(()=>{
             this.getDetail()
