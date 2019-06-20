@@ -70,19 +70,51 @@ export default {
     JoinPop
   },
   created(){
-    // this.$preview.on('gettingData',function(index,item){
-    //   if(item.src.indexOf('/thumb')>=0){
-    //     item.src = item.src.replace("/thumb","")
-    //   }
-    // })
-    this.id = this.$route.query.id
-    this.showLoading = true
-    this.$nextTick(()=>{
-      this.getInfo()
-      this.getList()
-    })
+    if(this.checkWxBrowser()){
+      this.$global.cardId = this.$route.query.id
+      this.checkCode()
+    }else{
+      this.id = this.$route.query.id
+      this.showLoading = true
+      this.$nextTick(()=>{
+        this.getInfo()
+        this.getList()
+      })
+    }
   },
   methods: {
+    checkCode: function(){
+      if (this.$route.query.code) {
+        this.$global.code = this.$route.query.code
+        if(this.$global.hasLogin){
+          this.id = this.$global.cardId
+          console.log('登陆成功')
+          this.$nextTick(()=>{
+            this.getInfo()
+            this.getList()
+          })
+        }else{
+          let data = {
+            code: this.$route.query.code
+          }
+          this.$utils.login(data).then(()=>{
+            this.$global.hasLogin = true
+            this.id = this.$global.cardId
+            console.log('登陆成功')
+            this.$nextTick(()=>{
+              this.getInfo()
+              this.getList()
+            })
+          })
+        }
+      }else{
+        if(this.$global.code.length == 0){
+          let url = window.location.href
+          this.$utils.getCode(url)
+          this.showLoading = false
+        }
+      }
+    },
     handleShowPop: function(){
       this.showJoinPop = true
     },
