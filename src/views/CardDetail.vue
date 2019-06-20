@@ -104,7 +104,7 @@ export default {
       let data = {
         card_id: this.id
       }
-      this.$utils.axiosRequest('POST','feed/card/info','',data,res=>{
+      this.$utils.axiosRequest('POST','api/feed/card/info','',data,res=>{
         this.info = res.data.info
         this.$nextTick(()=>{
           this.showLoading = false
@@ -120,7 +120,7 @@ export default {
           type: 0,
           target_id: this.id
         }
-        this.$utils.axiosRequest('POST','comment/list','',data,res=>{
+        this.$utils.axiosRequest('POST','api/comment/list','',data,res=>{
           if(res.data.list.length>5){
             this.showMoreBtn = true
           }

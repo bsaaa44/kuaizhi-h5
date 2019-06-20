@@ -1,7 +1,8 @@
 <script>
-let hostUrl = 'https://pdz.sync163.com/webpage/'
+let hostUrl = 'http://dev.kz.sync163.com/webpage/'
 // let hostUrl = 'https://dev.pdz.sync163.com/webpage/'
 let userInfo = ''
+let topicId = ''
 let code = ''
 let type = ''
 export default {

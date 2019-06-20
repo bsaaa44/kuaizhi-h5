@@ -70,12 +70,13 @@ export default {
     JoinPop
   },
   created(){
-    this.topicId = this.$route.query.id
+    this.$global.topicId = this.$route.query.id
     this.showLoading = true
     if(this.checkWxBrowser()){
       this.$global.iosUrl = this.$global.hostUrl + this.$route.fullPath
       this.checkCode()
     }else{
+      this.topicId = this.$route.query.id
       this.$nextTick(()=>{
         this.getDetail()
         this.getList()
@@ -88,11 +89,12 @@ export default {
         this.$global.code = this.$route.query.code
         if(this.$global.userInfo.nickName){
           this.userInfo = this.$global.userInfo
+          this.topicId = this.$global.topicId
           console.log('登陆成功')
-          this.getDetail()
-          this.getList()
-          // this.getBroadCast()
-          // this.handleHideShare()
+          this.$nextTick(()=>{
+            this.getDetail()
+            this.getList()
+          })
         }else{
           let data = {
             code: this.$route.query.code
@@ -102,8 +104,6 @@ export default {
             console.log('登陆成功')
             this.getDetail()
             this.getList()
-            // this.getBroadCast()
-            // this.handleHideShare()
           })
         }
       }else{
@@ -134,7 +134,7 @@ export default {
       let data = {
         topic_id: this.topicId
       }
-      this.$utils.axiosRequest('POST','topic/info','',data,res=>{
+      this.$utils.axiosRequest('POST','api/topic/info','',data,res=>{
         this.info = res.data.info
         this.$nextTick(()=>{
           this.showLoading = false
@@ -149,7 +149,7 @@ export default {
           topic_id: this.topicId,
           page: this.currentPage
         }
-        this.$utils.axiosRequest('POST','topic/cards','',data,res=>{
+        this.$utils.axiosRequest('POST','api/topic/cards','',data,res=>{
           // let rxp = /<a-link href="(.*?)">(.*?)<\/a-link>/gi
           // for(let i of res.data.list){
           //   i.text = i.text.replace(rxp,"<a href='$1' style='color:#4891E1'>$2</a>")
