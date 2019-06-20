@@ -70,18 +70,49 @@ export default {
     JoinPop
   },
   created(){
-    if(this.checkWxBrowser()){
-
-    }
-    // this.
     this.topicId = this.$route.query.id
     this.showLoading = true
-    this.$nextTick(()=>{
-      this.getDetail()
-      this.getList()
-    })
+    if(this.checkWxBrowser()){
+      this.$global.iosUrl = this.$global.hostUrl + this.$route.fullPath
+      this.checkCode()
+    }else{
+      this.$nextTick(()=>{
+        this.getDetail()
+        this.getList()
+      })
+    }
   },
   methods:{
+    checkCode: function(){
+      if (this.$route.query.code) {
+        this.$global.code = this.$route.query.code
+        if(this.$global.userInfo.nickName){
+          this.userInfo = this.$global.userInfo
+          console.log('登陆成功')
+          this.getDetail()
+          this.getList()
+          // this.getBroadCast()
+          // this.handleHideShare()
+        }else{
+          let data = {
+            code: this.$route.query.code
+          }
+          this.$utils.login(data).then(()=>{
+            this.userInfo = this.$global.userInfo
+            console.log('登陆成功')
+            this.getDetail()
+            this.getList()
+            // this.getBroadCast()
+            // this.handleHideShare()
+          })
+        }
+      }else{
+        if(this.$global.code.length == 0){
+          this.$utils.getCode()
+          this.showLoading = false
+        }
+      }
+    },
     handleShowPop: function(){
       this.showJoinPop = true
     },

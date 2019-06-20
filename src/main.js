@@ -26,12 +26,6 @@ Vue.use(Toast);
 let options = {
   fullscreenEl:false,
   tapToClose: true
-  // addCaptionHTMLFn: function(item, captionEl, isFake){
-  //   console.log(item)
-  //   if(item.src.indexOf('/thumb')>=0){
-  //     item.src = item.src.replace('/thumb',"")
-  //   }
-  // } 
 }
 Vue.use(preview,options)
 Vue.use(VueLazyload,{
@@ -39,7 +33,6 @@ Vue.use(VueLazyload,{
     progressive(listener,options){
       let isCDN = 'cdn.sync163.com'
       if(listener.src.indexOf(isCDN)>=0){
-        // listener.el.setAttribute('lazy-progressive', 'true')
         listener.src = listener.src + '/thumb'
       }
     }

@@ -38,16 +38,8 @@ function axiosRequest(method, url, params, data, success, fail) {
 function getCode(param) {
   // const redirect_url = encodeURIComponent(`https://pdz.sync163.com/webpage/`)
   let redirect_url
-  if(typeof Vue.prototype.$global.type != 'undefined'&&Vue.prototype.$global.type == 2){
-    // redirect_url = encodeURIComponent(`https://dev.pdz.sync163.com/webpage/helper`)
-    redirect_url = encodeURIComponent(`https://pdz.sync163.com/webpage/helper`)
-  }else{
-    // redirect_url = encodeURIComponent(`https://dev.pdz.sync163.com/webpage/`)
-    redirect_url = encodeURIComponent(`https://pdz.sync163.com/webpage/`)
-    // redirect_url = encodeURIComponent(hostUrl)
-  }
-  console.log('redirect_url',redirect_url)
-  const appId = 'wx6b60eff5e4aec312'
+  redirect_url = encodeURIComponent(`http://dev.kz.sync163.com/webpage/`)
+  const appId = 'wxbcc23d04c3aa4a7c'
   const response_type = 'code'
   const scope = 'snsapi_userinfo'
   const state = 11
