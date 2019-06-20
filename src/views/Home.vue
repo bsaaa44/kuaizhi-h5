@@ -89,8 +89,7 @@ export default {
     checkCode: function(){
       if (this.$route.query.code) {
         this.$global.code = this.$route.query.code
-        if(this.$global.userInfo.nickName){
-          this.userInfo = this.$global.userInfo
+        if(this.$global.hasLogin){
           this.topicId =  this.$global.topicId
           console.log('登陆成功')
           this.$nextTick(()=>{
@@ -102,7 +101,7 @@ export default {
             code: this.$route.query.code
           }
           this.$utils.login(data).then(()=>{
-            this.userInfo = this.$global.userInfo
+            this.$global.hasLogin = true
             this.topicId = this.$global.topicId
             console.log('登陆成功')
             this.$nextTick(()=>{
