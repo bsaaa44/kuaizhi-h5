@@ -35,7 +35,7 @@
     </div>
     <div class='images-block' v-if='item.images.length==1' @click.stop>
       <!-- <img v-lazy="item.images[0]" class='single-image' :preview='id'> -->
-      <img v-lazy="item.images[0]" class='single-image'>
+      <img v-lazy="item.images[0]" class='single-image' @click='handlePreviewImage(item.images,0)'>
     </div>
     <a class='website-block' :href='item.url' v-if='item.url&&item.url!=""' @click.stop>
       <img class='avatar' :src='item.url_cover'/>
