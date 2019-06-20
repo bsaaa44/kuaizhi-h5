@@ -84,9 +84,9 @@ export default {
   },
   methods: {
     checkCode: function(){
-      if (this.$route.query.code) {
+      if (this.$global.code.length != 0) {
         this.$global.code = this.$route.query.code
-        if(this.$global.hasLogin){
+        if(sessionStorage.getItem('token')){
           this.id = this.$global.cardId
           console.log('登陆成功')
           this.$nextTick(()=>{
@@ -98,7 +98,8 @@ export default {
             code: this.$route.query.code
           }
           this.$utils.login(data).then(()=>{
-            this.$global.hasLogin = true
+            sessionStorage.setItem('token',res.data.token)
+            // this.$global.hasLogin = true
             this.id = this.$global.cardId
             console.log('登陆成功')
             this.$nextTick(()=>{

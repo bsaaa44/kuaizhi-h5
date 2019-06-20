@@ -88,7 +88,7 @@ export default {
   },
   methods:{
     checkCode: function(){
-      if (this.$route.query.code) {
+      if (this.$global.code.length != 0) {
         this.$global.code = this.$route.query.code
         if(sessionStorage.getItem('token')){
           this.topicId =  this.$global.topicId
@@ -103,7 +103,7 @@ export default {
           }
           this.$utils.login(data).then(res=>{
             sessionStorage.setItem('token',res.data.token)
-            this.$global.hasLogin = true
+            // this.$global.hasLogin = true
             this.topicId = this.$global.topicId
             console.log('登陆成功')
             this.$nextTick(()=>{
