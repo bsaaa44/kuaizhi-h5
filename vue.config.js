@@ -6,7 +6,7 @@ module.exports = {
         port: 8080,
         // 设置代理
         proxy: {
-            '/api': {
+            '/': {
                 // 目标 API 地址
                 target: 'http://dev.kz.sync163.com/',
                 // 如果要代理 websockets

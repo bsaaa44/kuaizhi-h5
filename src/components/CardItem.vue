@@ -22,7 +22,7 @@
       </video>
     </div>
     <div class='images-block' v-if='item.images.length>1' @click.stop>
-      <img v-lazy="it" v-for="(it,idx) in item.images" :key="idx" :preview='id'
+      <img v-lazy="it" v-for="(it,idx) in item.images" :key="idx" @click='handlePreviewImage(item.images,idx)'
        :class="{
         'image-type-1':item.images.length!=2&&item.images.length!=1&&(idx>=item.images.length%3),
         'image-type-2':item.images.length%3==2&&idx<item.images.length%3,
@@ -32,35 +32,10 @@
           marginBottom: item.images.length>3&&idx<item.images.length-3?'0.05rem':'0'  
         }"
         />
-      <!-- <template  v-for='(it,idx) in item.images' > -->
-        <!-- <template v-if='item.images.length>1'>
-          <div :class='{
-            "image-item": true,
-            "image-2":item.images.length==2||((item.images.length==8||item.images.length==5)&&idx>item.images.length-3),
-            "image-3":item.images.length>=3}'
-            :style='{
-              marginBottom: item.images.length>3&&idx>2?"0.05rem":"0",
-              flexGrow: (item.images.length==4||item.images.length==7)&&idx==item.images.length-1?1:0,
-              height:(item.images.length==2)||(item.images.length>3&&item.images.length<6&&idx>item.images.length-2)||(item.images.length>6&&item.images.length<9&&idx>item.images.length-2)?imageWidth/2+"px":item.images.length==1?"auto":"1.03rem"
-            }'
-          :key='idx' @click.stop>
-            <div 
-            :style="it | backgroundAddThumb"
-            :class='{
-              "image-4":item.images.length>1}
-            '>
-            </div>
-          </div>
-        </template>
-        <template v-if="item.images.length==1">
-          <div class='image-item' :key='idx'>
-            <img :src='it | addThumb' class='image-1' />
-          </div>
-        </template> -->
-      <!-- </template> -->
     </div>
     <div class='images-block' v-if='item.images.length==1' @click.stop>
-      <img v-lazy="item.images[0]" class='single-image' :preview='id'>
+      <!-- <img v-lazy="item.images[0]" class='single-image' :preview='id'> -->
+      <img v-lazy="item.images[0]" class='single-image'>
     </div>
     <a class='website-block' :href='item.url' v-if='item.url&&item.url!=""' @click.stop>
       <img class='avatar' :src='item.url_cover'/>
@@ -87,6 +62,8 @@
 </template>
 
 <script>
+import { ImagePreview } from 'vant';
+
 export default {
   data(){
     return{
@@ -94,13 +71,18 @@ export default {
     }
   },
   created(){
-    
     this.imageWidth = document.body.clientWidth
     console.log(this.imageWidth)
     let rxp = /<a-link href="(.*?)">(.*?)<\/a-link>/gi
     this.item.text = this.item.text.replace(rxp,"<a href='$1' style='color:#4891E1'>$2</a>")
   },
   methods:{
+    handlePreviewImage: function(itemArr,index){
+      ImagePreview({
+        images: itemArr,
+        startPosition:index
+      })
+    },
     handleShowPop: function(){
       this.$emit("handleShowPop")
     },

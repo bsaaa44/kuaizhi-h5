@@ -70,6 +70,7 @@ export default {
     JoinPop
   },
   created(){
+   
     // this.$global.topicId = this.$route.query.id
     console.log('token',sessionStorage.getItem('token'))
     this.showLoading = true
