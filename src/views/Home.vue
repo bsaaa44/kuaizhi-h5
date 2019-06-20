@@ -73,8 +73,9 @@ export default {
     // this.$global.topicId = this.$route.query.id
     this.showLoading = true
     if(this.checkWxBrowser()){
-      sessionStorage.setItem("topicId",this.$route.query.id)
-      this.$global.iosUrl = this.$global.hostUrl + this.$route.fullPath
+      // sessionStorage.setItem("topicId",this.$route.query.id)
+      this.$global.topicId = this.$route.query.id
+      // this.$global.iosUrl = this.$global.hostUrl + this.$route.fullPath
       this.checkCode()
     }else{
       this.topicId = this.$route.query.id
@@ -90,7 +91,7 @@ export default {
         this.$global.code = this.$route.query.code
         if(this.$global.userInfo.nickName){
           this.userInfo = this.$global.userInfo
-          this.topicId = sessionStorage.getItem("topicId")
+          this.topicId =  this.$global.topicId
           console.log('登陆成功')
           this.$nextTick(()=>{
             this.getDetail()
@@ -102,7 +103,7 @@ export default {
           }
           this.$utils.login(data).then(()=>{
             this.userInfo = this.$global.userInfo
-            this.topicId = sessionStorage.getItem("topicId")
+            this.topicId = this.$global.topicId
             console.log('登陆成功')
             this.$nextTick(()=>{
               this.getDetail()
@@ -112,7 +113,9 @@ export default {
         }
       }else{
         if(this.$global.code.length == 0){
-          this.$utils.getCode()
+          let url = window.location.href
+          console.log('url',url)
+          this.$utils.getCode(url)
           this.showLoading = false
         }
       }

@@ -38,7 +38,12 @@ function axiosRequest(method, url, params, data, success, fail) {
 function getCode(param) {
   // const redirect_url = encodeURIComponent(`https://pdz.sync163.com/webpage/`)
   let redirect_url
-  redirect_url = encodeURIComponent(`http://dev.kz.sync163.com/webpage/`)
+  if(param){
+    redirect_url = encodeURIComponent(param)
+  }else{
+    redirect_url = encodeURIComponent(`http://dev.kz.sync163.com/webpage/`)
+  }
+  
   const appId = 'wxbcc23d04c3aa4a7c'
   const response_type = 'code'
   const scope = 'snsapi_userinfo'
