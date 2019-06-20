@@ -71,6 +71,7 @@ export default {
   },
   created(){
     // this.$global.topicId = this.$route.query.id
+    console.log('token',sessionStorage.getItem('token'))
     this.showLoading = true
     if(this.checkWxBrowser()){
       // sessionStorage.setItem("topicId",this.$route.query.id)
@@ -100,7 +101,8 @@ export default {
           let data = {
             code: this.$route.query.code
           }
-          this.$utils.login(data).then(()=>{
+          this.$utils.login(data).then(res=>{
+            sessionStorage.setItem('token',res.data.token)
             this.$global.hasLogin = true
             this.topicId = this.$global.topicId
             console.log('登陆成功')
