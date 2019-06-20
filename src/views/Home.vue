@@ -90,7 +90,7 @@ export default {
     checkCode: function(){
       if (this.$route.query.code) {
         this.$global.code = this.$route.query.code
-        if(this.$global.hasLogin){
+        if(sessionStorage.getItem('token')){
           this.topicId =  this.$global.topicId
           console.log('登陆成功')
           this.$nextTick(()=>{
