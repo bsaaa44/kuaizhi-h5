@@ -133,7 +133,8 @@ export default {
         this.$router.push({
           path: '/openTips',
           query: {
-            page: 'topicPage'
+            page: 'topicPage',
+            id: this.id
           }
         })
         window.location = window.location

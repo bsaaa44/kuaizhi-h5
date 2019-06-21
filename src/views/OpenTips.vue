@@ -16,7 +16,7 @@ export default {
     // location.reload()
     if(this.checkBrowser()=='wx'){
       this.showOpenTips = true
-    }else{
+    }else if(this.checkBrowser()=='safari'){
       console.log('是safari浏览器尝试跳转')
       window.location.href=`kuaizhi://TopicListViewController?id="8EnYR9xbJbMve"`
       setTimeout(()=>{
@@ -29,10 +29,14 @@ export default {
     checkBrowser: function(){
       console.log('进来了')
       let ua = navigator.userAgent.toLowerCase();
+      let isChrome = ua.indexOf("chrome") != -1;
+      let isSafari = ua.indexOf("safari") != -1;
+      // let is360 = checkMime("type", "application/vnd.chromium.remoting-viewer");
       if (ua.match(/MicroMessenger/i) == "micromessenger") {
         return 'wx'
-      }else if(ua.indexOf('Safari')>-1){
-        return 'safari'
+      }
+      if(!isChrome && isSafari){
+        return 'safari';
       }
     }
   }
