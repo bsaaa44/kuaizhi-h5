@@ -88,6 +88,7 @@ export default {
       this.$router.push({
         path: '/openTips'
       })
+      window.location = window.location
     },
     navToDetail: function(id){
       this.$router.push({

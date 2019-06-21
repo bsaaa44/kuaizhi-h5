@@ -13,7 +13,7 @@ export default {
     }
   },
   created(){
-    location.reload()
+    // location.reload()
     if(this.checkBrowser()=='wx'){
       this.showOpenTips = true
     }else if(this.checkBrowser()=='safari'){
