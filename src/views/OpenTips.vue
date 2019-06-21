@@ -17,9 +17,11 @@ export default {
     if(this.checkBrowser()=='wx'){
       this.showOpenTips = true
     }else if(this.checkBrowser()=='safari'){
+      console.log('是safari浏览器尝试跳转')
       window.location.href=`kuaizhi://TopicListViewController?id="8EnYR9xbJbMve"`
       setTimeout(()=>{
         if(this.checkBrowser()=='safari'){
+          console.log('是safari浏览器尝试跳转失败，跳appstore')
           window.location.href = 'https://apps.apple.com/cn/app/%E7%A5%9E%E9%83%BD%E5%A4%9C%E8%A1%8C%E5%BD%95/id1420331309'
         }
       },1000)
