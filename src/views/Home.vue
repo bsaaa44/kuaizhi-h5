@@ -130,7 +130,7 @@ export default {
         this.$router.push({
           path: '/openTips',
           query: {
-            page: 'topicPage',
+            page: 'TopicListViewController',
             id: this.topicId
           }
         })
