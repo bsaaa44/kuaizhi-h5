@@ -125,7 +125,19 @@ export default {
       }
     },
     handleShowPop: function(){
-      this.showJoinPop = true
+      // this.showJoinPop = true
+      let ua = navigator.userAgent;
+      if(ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1){
+        Toast('暂无Android版本');
+      }else if(!!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)){
+        this.$router.push({
+          path: '/openTips',
+          query: {
+            page: 'topicPage'
+          }
+        })
+        window.location = window.location
+      }
     },
     handleClosePop: function(){
       this.showJoinPop = false

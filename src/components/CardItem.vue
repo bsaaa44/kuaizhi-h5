@@ -85,10 +85,6 @@ export default {
     },
     handleShowPop: function(){
       this.$emit("handleShowPop")
-      this.$router.push({
-        path: '/openTips'
-      })
-      window.location = window.location
     },
     navToDetail: function(id){
       this.$router.push({
