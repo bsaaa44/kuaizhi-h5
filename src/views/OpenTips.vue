@@ -17,7 +17,7 @@ export default {
     if(this.checkBrowser()=='wx'){
       this.showOpenTips = true
     }else if(this.checkBrowser()=='safari'){
-      window.location.href=`com.sinoceanland.yjq://goodsdetail?goodsid=1420331309`
+      window.location.href=`kuaizhi://TopicListViewController?id="8EnYR9xbJbMve"`
       setTimeout(()=>{
         if(this.checkBrowser()=='safari'){
           window.location.href = 'https://apps.apple.com/cn/app/%E7%A5%9E%E9%83%BD%E5%A4%9C%E8%A1%8C%E5%BD%95/id1420331309'
