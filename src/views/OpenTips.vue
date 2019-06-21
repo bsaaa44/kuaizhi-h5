@@ -9,21 +9,31 @@ import { setTimeout } from 'timers';
 export default {
   data(){
     return{
-      showOpenTips: false
+      showOpenTips: false,
+      id: 0,
+      page: ''
     }
   },
   created(){
-    // location.reload()
-    if(this.checkBrowser()=='wx'){
-      this.showOpenTips = true
-    }else if(this.checkBrowser()=='safari'){
-      console.log('是safari浏览器尝试跳转')
-      window.location.href=`kuaizhi://TopicListViewController?id="8EnYR9xbJbMve"`
-      setTimeout(()=>{
-        console.log('是safari浏览器尝试跳转失败，跳appstore')
-        window.location.href = 'https://apps.apple.com/cn/app/%E7%A5%9E%E9%83%BD%E5%A4%9C%E8%A1%8C%E5%BD%95/id1420331309'
-      },1000)
-    }
+     this.id = this.$route.query.id
+     this.page = this.$route.query.page
+     this.$nextTick(()=>{
+       if(this.checkBrowser()=='wx'){
+         this.showOpenTips = true
+       }else if(this.checkBrowser()=='safari'){
+         console.log('是safari浏览器尝试跳转')
+         if(this.page == 'topicPage'){
+          window.location.href=`kuaizhi://TopicListViewController?id="${this.id}"`
+         }else{
+          window.location.href=`kuaizhi://FeedDetailViewController?id="${this.id}"`
+         }
+        
+         setTimeout(()=>{
+           console.log('是safari浏览器尝试跳转失败，跳appstore')
+           window.location.href = 'https://apps.apple.com/cn/app/%E7%A5%9E%E9%83%BD%E5%A4%9C%E8%A1%8C%E5%BD%95/id1420331309'
+         },1000)
+       }
+     })
   },
   methods:{
     checkBrowser: function(){
