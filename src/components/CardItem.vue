@@ -4,6 +4,7 @@
       <span>{{item.created_at}}</span>
       <img src='../assets/more.png' class='img-more' @click="handleShowPop"/>
     </div>
+    <div class='card-title'>{{item.title}}</div>
     <div class='content' v-html="item.text.replace(/\n/g, '<br>')"></div>
     <!-- <div class='images-block' v-if='item.images.length>0'>
       <div :class='{
@@ -44,7 +45,7 @@
         <p class='desc' v-if='item.url_desc!=""'>{{item.url_desc}}</p>
       </div>
     </a>
-    <div class='tools-block' :style="isDetailPage?'padding:0 0.08rem':''" @click.stop>
+    <div class='tools-block' :style="isDetailPage?'padding:0 0.08rem 0.13rem':''" @click.stop>
       <div class='zan-btn tools-btn' @click="handleShowPop">
         <img src='../assets/finger.png' class='img-finger'/>
         <span class='count' v-if='item.zanCount>0'>{{item.zanCount}}</span>
@@ -132,6 +133,13 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  .card-title{
+    font-size 15px;
+    color #333;
+    font-weight bold
+    line-height 21px
+    margin-top 0.07rem
+  }
   video{
     width 100%
     height 1.48rem
@@ -156,12 +164,13 @@ export default {
   }
   .item-block .content{
     // white-space pre;
-    margin-top 0.15rem
+    margin-top 0.12rem
     font-size 14px;
     line-height 21px;
     color #333;
-    // word-break:break-all;
+    // word-break:normal;
     width 100%;
+    word-wrap break-word
   }
   .item-block .images-block{
     margin-top 0.12rem;
@@ -242,30 +251,38 @@ export default {
     flex-shrink 0
   }
   .item-block .website-block .info{
+    // width 2.29rem
+    word-wrap break-word
     display flex;
     flex-flow column;
     justify-content space-around;
     height: 0.66rem
   }
   .item-block .website-block .title{
-    font-size: 13px;
+    // width 2.29rem
+    word-wrap break-word
+    font-size: 12px;
     color:#666;
     font-weight: bold;
-    line-height 19px;
+    line-height 15px;
     margin-bottom 0.02rem
     display: -webkit-box;
+    word-break break-all
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
   }
   .item-block .website-block .desc{
+    width 2.29rem
     font-size: 12px;
-    line-height 17px;
+    line-height 15px;
+    font-weight 300
     color #666;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     overflow: hidden;
+    word-break break-all
   }
   .item-block .tools-block{
     margin-top 0.13rem
@@ -273,7 +290,7 @@ export default {
     flex-flow row;
     justify-content space-between;
     align-items center
-    margin-bottom 0.13rem
+    padding-bottom 0.13rem
     box-sizing border-box
   }
   .item-block .tools-block .tools-btn{

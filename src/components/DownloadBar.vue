@@ -46,6 +46,7 @@ export default {
   .download-bar{
     // position fixed
     // left 0;
+    position relative
     width 100%;
     height 0.6rem
     background #f2f2f2
@@ -54,7 +55,7 @@ export default {
     align-items center
     padding 0 0.15rem;
     box-sizing border-box
-    z-index 1000
+    z-index 2
     transition all 200ms linear
   }
   .download-bar .img-logo{

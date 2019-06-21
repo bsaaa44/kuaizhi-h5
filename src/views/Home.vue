@@ -1,5 +1,5 @@
 <template>
-  <div>  
+  <div id='page'>  
     <join-pop @handleClosePop="handleClosePop" v-if='showJoinPop'/>
     <download-bar @handleShowPop= "handleShowPop"/>
     <div class="home" v-if='info!=""'>
@@ -31,6 +31,7 @@
           </infinite-loading> -->
         </div>
       </div>
+      <div class='fill'></div>
       <button class='open-btn' @click='handleShowPop'>App 内打开</button>
     </div>
     
@@ -70,7 +71,6 @@ export default {
     JoinPop
   },
   created(){
-    
     // this.$global.topicId = this.$route.query.id
     console.log('token',sessionStorage.getItem('token'))
     this.showLoading = true
@@ -125,7 +125,7 @@ export default {
     handleShowPop: function(){
       let ua = navigator.userAgent;
       if(ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1){
-        Toast('暂无Android版本');
+        this.$toast('暂无Android版本');
       }else if(!!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)){
         this.$router.push({
           path: '/openTips',
@@ -172,12 +172,10 @@ export default {
           page: this.currentPage
         }
         this.$utils.axiosRequest('POST','api/topic/cards','',data,res=>{
-          // let rxp = /<a-link href="(.*?)">(.*?)<\/a-link>/gi
-          // for(let i of res.data.list){
-          //   i.text = i.text.replace(rxp,"<a href='$1' style='color:#4891E1'>$2</a>")
-          // }
           if(res.data.list.length>0){
-            res.data.list.splice(res.data.list.length-6,5)
+            if(res.data.list.length>5){
+              res.data.list.splice(res.data.list.length-6,5)
+            }
             if(this.list.length == 0){
               this.list = res.data.list
               ++this.currentPage
@@ -205,7 +203,15 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  .fill{
+    width 100%;
+    height 10px;
+  }
+  #page {
+    background #f7f7f7
+  }
   .open-btn{
+    z-index 2
     position fixed
     bottom 0.8rem
     left 50%;
@@ -225,10 +231,14 @@ export default {
     box-shadow: 0 0 4px 0 rgba(0,0,0,.12);
   }
   .background-image-block{
+    z-index 1
+    position absolute
+    top 0;
+    left 0;
     width 100vw
     height 2.44rem;
     overflow: hidden;
-    position relative
+    // position relative
   }
   .background-image-block .bg{
     position absolute
@@ -246,15 +256,18 @@ export default {
     
   }
   #main{
+    position relative
+    z-index 2
     // width 91.47%
     width 3.43rem;
     // width 343rem;
     background #fff;
     border-radius: 0.1rem;
-    position absolute;
-    top: 0.92rem;
-    left 50%
-    transform translateX(-50%);
+    // position absolute;
+    // top: 0.92rem;
+    // left 50%
+    // transform translateX(-50%);
+    margin 0.92rem auto 0
     padding 0 0.12rem
     box-sizing border-box
   }
