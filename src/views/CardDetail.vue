@@ -133,7 +133,7 @@ export default {
         this.$router.push({
           path: '/openTips',
           query: {
-            page: 'topicPage',
+            page: 'cardPage',
             id: this.id
           }
         })
