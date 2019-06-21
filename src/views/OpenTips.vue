@@ -16,7 +16,7 @@ export default {
     // location.reload()
     if(this.checkBrowser()=='wx'){
       this.showOpenTips = true
-    }else if(/^(?=.Safari)(?!.Chrome)/.test(navigator.userAgent)){
+    }else{
       console.log('是safari浏览器尝试跳转')
       window.location.href=`kuaizhi://TopicListViewController?id="8EnYR9xbJbMve"`
       setTimeout(()=>{
