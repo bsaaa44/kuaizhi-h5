@@ -263,9 +263,11 @@ export default {
     color #999
   }
   .robot-contain .info-block .subscript-btn{
+    flex-shrink 0
     border 0
     width 0.6rem;
     height 0.28rem
+    line-height 0.28rem
     border-radius: 0.14rem
     background: #007AFF
     color #fff
