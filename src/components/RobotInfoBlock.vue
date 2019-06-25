@@ -76,7 +76,8 @@ export default {
     // background: #000
   }
   .owner-block .desc-block{
-    width 2.38rem
+    // width 2.38rem
+    flex-grow 1
   }
   .owner-block .desc-block .label{
     font-size: 12px;

@@ -76,7 +76,9 @@ export default {
     this.showLoading = true
     if(this.checkWxBrowser()){
       // sessionStorage.setItem("topicId",this.$route.query.id)
-      this.$global.topicId = this.$route.query.id
+      if(this.$global.topicId == 0){
+        this.$global.topicId = this.$route.query.id
+      }
       // this.$global.iosUrl = this.$global.hostUrl + this.$route.fullPath
       this.checkCode()
     }else{
@@ -89,8 +91,12 @@ export default {
   },
   methods:{
     checkCode: function(){
+      console.log('进来了')
+      console.log('$global.code.length',this.$global.code.length)
       if (this.$global.code.length != 0||this.$route.query.code) {
-        this.$global.code = this.$route.query.code
+        if(this.$global.code.length==0){
+          this.$global.code = this.$route.query.code
+        }
         if(sessionStorage.getItem('token')){
           this.topicId =  this.$global.topicId
           console.log('登陆成功')
