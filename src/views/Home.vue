@@ -76,7 +76,8 @@ export default {
     this.showLoading = true
     if(this.checkWxBrowser()){
       // sessionStorage.setItem("topicId",this.$route.query.id)
-      if(this.$global.topicId == 0){
+      if(this.$global.topicId === 0){
+        console.log('进来了')
         this.$global.topicId = this.$route.query.id
       }
       // this.$global.iosUrl = this.$global.hostUrl + this.$route.fullPath
