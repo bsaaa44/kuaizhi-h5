@@ -10,8 +10,11 @@ let code = ''
 let type = ''
 export default {
   hostUrl,
+  hasLogin,
   userInfo,
   code,
-  type
+  type,
+  topicId,
+  cardId
 }
 </script>

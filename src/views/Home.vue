@@ -76,7 +76,6 @@ export default {
     this.showLoading = true
     if(this.checkWxBrowser()){
       // sessionStorage.setItem("topicId",this.$route.query.id)
-      console.log('test',this.$global.topicId)
       if(this.$global.topicId == 0){
         this.$global.topicId = this.$route.query.id
       }
@@ -92,8 +91,6 @@ export default {
   },
   methods:{
     checkCode: function(){
-      console.log('进来了')
-      console.log('$global.code.length',this.$global.code.length)
       if (this.$global.code.length != 0||this.$route.query.code) {
         if(this.$global.code.length==0){
           this.$global.code = this.$route.query.code
