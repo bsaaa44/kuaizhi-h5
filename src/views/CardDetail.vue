@@ -84,8 +84,10 @@ export default {
   },
   methods: {
     checkCode: function(){
-      if (this.$global.code.length != 0||this.$route.query.code) {
-        this.$global.code = this.$route.query.code
+      if (this.$global.code != ""||this.$route.query.code) {
+        if(this.$global.code == ""){
+          this.$global.code = this.$route.query.code
+        }
         if(sessionStorage.getItem('token')){
           this.id = this.$global.cardId
           console.log('登陆成功')

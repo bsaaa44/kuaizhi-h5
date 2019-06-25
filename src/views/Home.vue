@@ -91,8 +91,6 @@ export default {
   },
   methods:{
     checkCode: function(){
-      console.log('进来了')
-      console.log('test',this.$global.code)
       if (this.$global.code != ""||this.$route.query.code) {
         if(this.$global.code == ""){
           this.$global.code = this.$route.query.code
