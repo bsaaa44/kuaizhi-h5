@@ -91,8 +91,10 @@ export default {
   },
   methods:{
     checkCode: function(){
-      if (this.$global.code.length != 0||this.$route.query.code) {
-        if(this.$global.code.length==0){
+      console.log('进来了')
+      console.log('test',this.$global.code)
+      if (this.$global.code != ""||this.$route.query.code) {
+        if(this.$global.code == ""){
           this.$global.code = this.$route.query.code
         }
         if(sessionStorage.getItem('token')){
