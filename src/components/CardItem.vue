@@ -22,7 +22,7 @@
         <source type="application/x-mpegURL" :src="item.video">
       </video>
     </div>
-    <div class='images-block' v-if='item.images.length>1' @click.stop>
+    <div class='images-block' v-if='item.images.length>1&&item.video==""' @click.stop>
       <img v-lazy="it" v-for="(it,idx) in item.images" :key="idx" @click='handlePreviewImage(item.images,idx)'
        :class="{
         'image-type-1':item.images.length!=2&&item.images.length!=1&&(idx>=item.images.length%3),
@@ -34,7 +34,7 @@
         }"
         />
     </div>
-    <div class='images-block' v-if='item.images.length==1' @click.stop>
+    <div class='images-block' v-if='item.images.length==1&&item.video==""' @click.stop>
       <!-- <img v-lazy="item.images[0]" class='single-image' :preview='id'> -->
       <img v-lazy="item.images[0]" class='single-image' @click='handlePreviewImage(item.images,0)'>
     </div>
@@ -141,6 +141,7 @@ export default {
     margin-top 0.07rem
   }
   video{
+    object-fit cover
     width 100%
     height 1.48rem
     border-radius 0.04rem

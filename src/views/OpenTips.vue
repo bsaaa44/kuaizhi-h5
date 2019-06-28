@@ -23,10 +23,14 @@ export default {
        }else if(this.checkBrowser()=='safari'){
           let url = window.location.href.replace("kz.sync163.com","kuaizhi.app")
           window.location.href= url
+          let loadDateTime = Date.now();
          setTimeout(()=>{
+            let timeOutDateTime = Date.now();
+            if (timeOutDateTime - loadDateTime < 1000) {
+                window.location.href = 'https://testflight.apple.com/join/hFuy6byk';
+            }
            console.log('是safari浏览器尝试跳转失败，跳appstore')
-           window.location.href = 'https://testflight.apple.com/join/hFuy6byk'
-         },3000)
+         },25)
        }
      })
   },
