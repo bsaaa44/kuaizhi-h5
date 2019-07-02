@@ -15,8 +15,8 @@ import 'vue-photo-preview/dist/skin.css'
 import './assets/css/reset.css'
 import './assets/css/global.css'
 
-// axios.defaults.baseURL = 'https://kz.sync163.com'
-axios.defaults.baseURL = 'http://dev.kz.sync163.com'
+axios.defaults.baseURL = 'https://kz.sync163.com'
+// axios.defaults.baseURL = 'http://dev.kz.sync163.com'
 // axios.defaults.baseURL = '/'
 axios.defaults.headers.common['token']='asdfasdfasdf'
 
@@ -33,7 +33,9 @@ Vue.use(VueLazyload,{
   filter: {
     progressive(listener,options){
       let isCDN = 'cdn.sync163.com'
-      if(listener.src.indexOf(isCDN)>=0){
+      let isCDN2 = 'alcdn.sync163.com'
+      let isCDN3 = 'cdnv2.sync163.com'
+      if(listener.src.indexOf(isCDN)>=0||listener.src.indexOf(isCDN2)>=0||listener.src.indexOf(isCDN3)>=0){
         listener.src = listener.src + '/thumb'
       }
     }

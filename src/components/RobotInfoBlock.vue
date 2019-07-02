@@ -78,6 +78,7 @@ export default {
   .owner-block .desc-block{
     // width 2.38rem
     flex-grow 1
+    overflow hidden
   }
   .owner-block .desc-block .label{
     font-size: 12px;
@@ -98,6 +99,7 @@ export default {
     width 0.12rem
     height 0.12rem
     float right;
+    margin-left 0.2rem
     flex-shrink 0
   }
 </style>

@@ -22,24 +22,24 @@
         <source type="application/x-mpegURL" :src="item.video">
       </video>
     </div>
-    <div class='images-block' v-if='item.images.length>1&&item.video==""' @click.stop>
-      <img v-lazy="it" v-for="(it,idx) in item.images" :key="idx" @click='handlePreviewImage(item.images,idx)'
+    <div class='images-block' v-if='imagesArr.length>1&&item.video==""' @click.stop>
+      <img v-lazy="it" v-for="(it,idx) in imagesArr" :key="idx" :onerror="imagePlaceholder" @click='handlePreviewImage(imagesArr,idx)'
        :class="{
-        'image-type-1':item.images.length!=2&&item.images.length!=1&&(idx>=item.images.length%3),
-        'image-type-2':item.images.length%3==2&&idx<item.images.length%3,
-        'image-type-3':item.images.length%3===1&&idx<item.images.length%3
+        'image-type-1':imagesArr.length!=2&&imagesArr.length!=1&&(idx>=imagesArr.length%3),
+        'image-type-2':imagesArr.length%3==2&&idx<imagesArr.length%3,
+        'image-type-3':imagesArr.length%3===1&&idx<imagesArr.length%3
         }" :style="{
-          height: (item.images.length%3===1&&idx<item.images.length%3)?imageWidth/2+'px':'auto',
-          marginBottom: item.images.length>3&&idx<item.images.length-3?'0.05rem':'0'  
+          height: (imagesArr.length%3===1&&idx<imagesArr.length%3)?imageWidth/2+'px':'auto',
+          marginBottom: imagesArr.length>3&&idx<imagesArr.length-3?'0.05rem':'0'  
         }"
         />
     </div>
-    <div class='images-block' v-if='item.images.length==1&&item.video==""' @click.stop>
-      <!-- <img v-lazy="item.images[0]" class='single-image' :preview='id'> -->
-      <img v-lazy="item.images[0]" class='single-image' @click='handlePreviewImage(item.images,0)'>
+    <div class='images-block' v-if='imagesArr.length==1&&item.video==""' @click.stop>
+      <!-- <img v-lazy="imagesArr[0]" class='single-image' :preview='id'> -->
+      <img v-lazy="imagesArr[0]" class='single-image' :onerror="imagePlaceholder" @click='handlePreviewImage(imagesArr,0)'>
     </div>
     <a class='website-block' :href='item.url' v-if='item.url&&item.url!=""' @click.stop>
-      <img class='avatar' :src='item.url_cover'/>
+      <img class='avatar' :src='item.url_cover' @error="onErrorHandler()"/>
       <div class='info'>
         <h3 class='title'>{{item.url_title}}</h3>
         <p class='desc' v-if='item.url_desc!=""'>{{item.url_desc}}</p>
@@ -68,7 +68,13 @@ import { ImagePreview } from 'vant';
 export default {
   data(){
     return{
+      imagePlaceholder: 'this.src="'+require('../assets/placeholder.png')+'"',
       imageWidth: 0
+    }
+  },
+  computed: {
+    imagesArr: function(){
+      return this.item.images.splice(0,9)
     }
   },
   created(){
@@ -78,6 +84,11 @@ export default {
     this.item.text = this.item.text.replace(rxp,"<a href='$1' style='color:#4891E1'>$2</a>")
   },
   methods:{
+    onErrorHandler: function(){
+      let img = event.srcElement;
+      console.log('img',img)
+      img.src= this.cover
+    },
     handlePreviewImage: function(itemArr,index){
       ImagePreview({
         images: itemArr,
@@ -97,20 +108,7 @@ export default {
     }
   },
   filters:{
-    backgroundAddThumb: function(value){
-      if(value.indexOf('cdn.sync163.com')>=0){
-        return 'background-image: url('+value+'/thumb)'
-      }else{
-        return 'background-image: url('+value+')'
-      }
-    },
-    addThumb: function(value){
-      if(value.indexOf('cdn.sync163.com')>=0){
-        return value+'/thumb'
-      }else{
-        return value
-      }
-    }
+  
   },
   props:{
     id: {
@@ -127,6 +125,10 @@ export default {
     isDetailPage: {
       type: Boolean,
       default: false
+    },
+    cover: {
+      type: String,
+      default: ''
     }
   }
 }
@@ -143,7 +145,7 @@ export default {
   video{
     object-fit cover
     width 100%
-    height 1.48rem
+    height 1.79rem
     border-radius 0.04rem
     margin-top 0.08rem
   }
@@ -197,6 +199,7 @@ export default {
     object-fit: cover
   }
   .single-image{
+    object-fit: cover
     max-height: 2.16rem
     max-width: 2.3rem
     border-radius: 0.02rem;

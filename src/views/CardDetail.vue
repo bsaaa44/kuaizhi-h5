@@ -6,14 +6,14 @@
       <div class='header-block'>
         <div class='robot-contain'>
           <div class='info-block'>
-            <img :src='info.topic.icon' class='avatar'/>
+            <img :src='info.topic.icon' class='avatar' :onerror="imagePlaceholder"/>
             <div class='middle'>
               <h1 class='title'>{{info.topic.name}}</h1>
               <p class='time'>{{info.created_at}}</p>  
             </div>  
             <button class='subscript-btn' @click="handleShowPop">订阅</button>
           </div>  
-          <card-item :item='info' :index='0' :showTimeBlock='false' :isDetailPage='true' class='card-item' @handleShowPop= "handleShowPop"/>
+          <card-item :item='info' :index='0' :showTimeBlock='false' :isDetailPage='true' :cover='info.topic.icon' class='card-item' @handleShowPop= "handleShowPop"/>
         </div> 
         <robot-info-block class='robot-info-block' :robots='info.fromRobots' @handleShowPop= "handleShowPop"/> 
       </div>  
@@ -51,6 +51,7 @@ import JoinPop from '../components/JoinPop.vue'
 export default {
   data(){
     return{
+      imagePlaceholder: 'this.src="'+require('../assets/placeholder.png')+'"',
       id: 0,
       info: '',
       list: [],

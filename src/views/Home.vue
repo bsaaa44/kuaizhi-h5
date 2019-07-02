@@ -8,7 +8,7 @@
       </div>
       <div id='main'>
         <div class='header-block'>
-          <img class='avatar' :src='info.icon'/>
+          <img class='avatar' :src='info.icon' :onerror="imagePlaceholder"/>
           <button class='subscript-btn' @click='handleShowPop'>订阅</button>
         </div>
         <div class='info-block'>
@@ -17,14 +17,18 @@
         </div>
         <robot-info-block :robots="info.robots" class='robot-info-block' @handleShowPop= "handleShowPop"/>
         <div class='owner-info-block'>
-          <img class='avatar' v-lazy='info.owner.avatar'/>
+          <img class='avatar' :src='info.owner.avatar'/>
           <span class='name'>{{info.owner.name}}</span>
           <span class='label'>创建</span>
         </div>
         <div class='divide-line'></div>
         <div class='topic-list'>
           <h2>主题动态</h2>
-          <card-item class='card-item' v-for='(item,index) in list' :key='index' :id='index' :item='item' :list='list' :index='index' @handleShowPop= "handleShowPop"/>
+          <div class='empty-block' v-if="list.length<=0">
+            <img src="../assets/empty.png" class='img-empty'/>
+            <p class='text-empty'>机器人正在追踪最新消息</p>
+          </div>
+          <card-item class='card-item' v-for='(item,index) in list' :key='index' :id='index' :item='item' :cover='info.icon' :list='list' :index='index' @handleShowPop= "handleShowPop"/>
           <!-- <infinite-loading @infinite="onInfinite" spinner="bubbles">  
             <span slot="no-more"></span> 
             <span slot="no-results"></span>     
@@ -51,6 +55,7 @@ import JoinPop from '../components/JoinPop.vue'
 export default {
   data(){
     return{
+      imagePlaceholder: 'this.src="'+require('../assets/placeholder.png')+'"',
       topicId: 0,
       imageWidth: 0,
       scrollLoading: false,
@@ -178,7 +183,7 @@ export default {
         this.$utils.axiosRequest('POST','api/topic/cards','',data,res=>{
           if(res.data.list.length>0){
             if(res.data.list.length>5){
-              res.data.list.splice(res.data.list.length-6,5)
+              res.data.list = res.data.list.splice(0,5)
             }
             if(this.list.length == 0){
               this.list = res.data.list
@@ -209,7 +214,7 @@ export default {
 <style lang="stylus" scoped>
   .fill{
     width 100%;
-    height 10px;
+    height 70px;
   }
   #page {
     background #f7f7f7
@@ -252,6 +257,7 @@ export default {
     filter: blur(7px)
     width 120%;
     height 120%
+    background: #ccc;
     background-position center;
     background-size: cover;
     // background-attachment fixed
@@ -355,6 +361,23 @@ export default {
   }
   .topic-list .card-item{
     margin-top 0.19rem
+  }
+  .empty-block{
+    width 100%;
+    height 3.5rem;
+    display flex;
+    flex-flow column;
+    align-items center
+    justify-content center
+  }
+  .empty-block .img-empty{
+    width 0.96rem
+    height 0.96rem
+    margin-bottom 0.11rem
+  }
+  .empty-block .text-empty{
+    font-size 13px;
+    color #666;
   }
 </style>
 
