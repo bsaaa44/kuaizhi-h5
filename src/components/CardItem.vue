@@ -15,11 +15,14 @@
         <img :src='it' :class='{"image-1":true}'/>
       </div> -->
     <div class='video-block' v-if='item.video&&item.video!=""' @click.stop>
-      <video controls="controls" :poster="item.video_thumb_img"
+      <!-- <video controls="controls" :poster="item.video_thumb_img"
       x-webkit-airplay="true" x5-video-player-fullscreen="true"
       playsinline="true" webkit-playsinline
       x5-video-player-typ="h5">
         <source type="application/x-mpegURL" :src="item.video">
+      </video> -->
+      <video :id="`player${index}`" class="video-js vjs-default-skin" controls muted preload="auto">
+        <source :src="item.video" type="application/x-mpegURL">
       </video>
     </div>
     <div class='images-block' v-if='imagesArr.length>1&&item.video==""' @click.stop>
@@ -63,6 +66,7 @@
 </template>
 
 <script>
+
 import { ImagePreview } from 'vant';
 
 export default {
@@ -82,6 +86,13 @@ export default {
     console.log(this.imageWidth)
     let rxp = /<a-link href="(.*?)">(.*?)<\/a-link>/gi
     this.item.text = this.item.text.replace(rxp,"<a href='$1' style='color:#4891E1'>$2</a>")
+  },
+  mounted(){
+    if(this.item.video!=""){
+      let id = `player${this.index}`
+      console.log('id',id)
+      this.$video(id)
+    }
   },
   methods:{
     onErrorHandler: function(){
