@@ -21,7 +21,7 @@
       x5-video-player-typ="h5">
         <source type="application/x-mpegURL" :src="item.video">
       </video> -->
-      <video :id="`player${index}`" class="video-js vjs-default-skin vjs-big-play-centered" controls muted preload="auto">
+      <video :id="`player${index}`" class="video-js vjs-default-skin vjs-big-play-centered" preload="auto">
         <source :src="item.video" type="application/x-mpegURL">
       </video>
     </div>
@@ -68,6 +68,7 @@
 <script>
 
 import { ImagePreview } from 'vant';
+import { constants } from 'crypto';
 
 export default {
   data(){
@@ -100,9 +101,14 @@ export default {
       if(this.item.video!=""){
         let id = `player${this.index}`
         console.log('id',id)
-        this.$video(id,{
+        let player = this.$video(id,{
           width,
-          height
+          height,
+          controls: true
+        },function(){
+          this.on("play",function(){
+            console.log('播放中')
+          })
         })
       }
     },
