@@ -98,7 +98,11 @@ export default {
   methods:{
     onVideoPlay: function(data){
       console.log(data)
-      this.$refs.cardItem.stopVideo()
+      console.log('this.$refs.cardItem',this.$refs.cardItem)
+      for(let item of this.$refs.cardItem){
+        item.stopVideo(data.index)
+      }
+      // this.$refs.cardItem.stopVideo()
     },
     checkCode: function(){
       if (this.$global.code != ""||this.$route.query.code) {

@@ -74,7 +74,8 @@ export default {
   data(){
     return{
       imagePlaceholder: 'this.src="'+require('../assets/placeholder.png')+'"',
-      imageWidth: 0
+      imageWidth: 0,
+      player: ''
     }
   },
   computed: {
@@ -94,8 +95,10 @@ export default {
     })
   },
   methods:{
-    stopVideo: function(){
-      console.log('停止播放')
+    stopVideo: function(index){
+      if(this.index !== index){
+        this.player.pause()
+      }
     },
     initPlayer:function(){
       let self = this
@@ -104,14 +107,13 @@ export default {
       let height= dom.clientHeight
       if(this.item.video!=""){
         let id = `player${this.index}`
-        console.log('id',id)
-        let player = this.$video(id,{
+        this.player = this.$video(id,{
           width,
           height,
           controls: true
         },function(){
           this.on("play",function(){
-            self.$emit("onVideoPlay",{index: this.index})
+            self.$emit("onVideoPlay",{index: self.index})
           })
         })
       }
