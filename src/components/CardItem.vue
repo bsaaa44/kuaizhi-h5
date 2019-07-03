@@ -96,7 +96,7 @@ export default {
         let width = dom.clientWidth
         let height= dom.clientHeight
         let id = `player${this.index}`
-        this.player = this.$video(id,{
+        let player = this.$video(id,{
           width,
           height,
           controls: true
@@ -105,6 +105,9 @@ export default {
             // self.$emit("onVideoPlay",{index: self.index})
           })
         })
+        console.log('player',player)
+        this.player = player
+        console.log('this.player',this.player)
       }
     },
     onErrorHandler: function(){
