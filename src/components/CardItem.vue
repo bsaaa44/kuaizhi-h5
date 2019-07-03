@@ -69,22 +69,17 @@ export default {
   },
   created(){
     this.imageWidth = document.body.clientWidth
-    console.log(this.imageWidth)
     let rxp = /<a-link href="(.*?)">(.*?)<\/a-link>/gi
     this.item.text = this.item.text.replace(rxp,"<a href='$1' style='color:#4891E1'>$2</a>")
   },
   mounted(){
     this.$nextTick(()=>{
-      console.log('this.player',this.player)
       if(this.player == ""){
-        console.log('进来了')
         this.initPlayer()
       }
     })
   },
   destroyed(){
-    console.log('离开页面触发')
-    console.log('this.player',this.player)
     if(this.player!=""){
       this.player.dispose()
     }
@@ -113,14 +108,11 @@ export default {
             // self.$emit("onVideoPlay",{index: self.index})
           })
         })
-        console.log('player',player)
         this.player = player
-        console.log('this.player',this.player)
       }
     },
     onErrorHandler: function(){
       let img = event.srcElement;
-      console.log('img',img)
       img.src= this.cover
     },
     handlePreviewImage: function(itemArr,index){
@@ -169,6 +161,16 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  .video-js .vjs-big-play-button{
+    width 1.5em !important
+    height 1.5em !important
+    border-radius 50% !important
+    margin-top -1em !important
+    margin-left -1em !important
+    border 0 !important
+    line-height 2em !important
+    font-size 1.5em !important
+  }
   .card-title{
     font-size 15px;
     color #333;
