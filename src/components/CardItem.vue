@@ -14,14 +14,14 @@
       v-for='(it,idx) in item.images' :key='idx'>
         <img :src='it' :class='{"image-1":true}'/>
       </div> -->
-    <div class='video-block' v-if='item.video&&item.video!=""' @click.stop>
+    <div class='video-block' ref='videoBlock' v-if='item.video&&item.video!=""' @click.stop>
       <!-- <video controls="controls" :poster="item.video_thumb_img"
       x-webkit-airplay="true" x5-video-player-fullscreen="true"
       playsinline="true" webkit-playsinline
       x5-video-player-typ="h5">
         <source type="application/x-mpegURL" :src="item.video">
       </video> -->
-      <video :id="`player${index}`" class="video-js vjs-default-skin" controls muted preload="auto">
+      <video :id="`player${index}`" class="video-js vjs-default-skin vjs-big-play-centered" controls muted preload="auto">
         <source :src="item.video" type="application/x-mpegURL">
       </video>
     </div>
@@ -88,13 +88,24 @@ export default {
     this.item.text = this.item.text.replace(rxp,"<a href='$1' style='color:#4891E1'>$2</a>")
   },
   mounted(){
-    if(this.item.video!=""){
-      let id = `player${this.index}`
-      console.log('id',id)
-      this.$video(id)
-    }
+    this.$nextTick(()=>{
+      this.initPlayer()
+    })
   },
   methods:{
+    initPlayer:function(){
+      let dom = this.$refs.videoBlock
+      let width = dom.clientWidth
+      let height= dom.clientHeight
+      if(this.item.video!=""){
+        let id = `player${this.index}`
+        console.log('id',id)
+        this.$video(id,{
+          width,
+          height
+        })
+      }
+    },
     onErrorHandler: function(){
       let img = event.srcElement;
       console.log('img',img)
@@ -153,12 +164,18 @@ export default {
     line-height 21px
     margin-top 0.07rem
   }
+  .video-block{
+    margin-top 0.08rem
+    width 100% !important
+    height 1.79rem !important
+    border-radius 0.04rem !important
+    overflow hidden
+  }
   video{
     object-fit cover
-    width 100%
-    height 1.79rem
-    border-radius 0.04rem
-    margin-top 0.08rem
+    // width 100% !important
+    // height 1.79rem !important
+    border-radius 0.04rem !important
   }
   .item-block{
     // margin-top 0.19rem
