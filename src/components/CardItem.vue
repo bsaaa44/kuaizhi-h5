@@ -7,7 +7,7 @@
     <div class='card-title'>{{item.title}}</div>
     <div class='content' v-html="item.text.replace(/\n/g, '<br>')"></div>
     <div class='video-block' ref='videoBlock' v-if='item.video&&item.video!=""' @click.stop>
-      <video :id="`player${index}`" class="video-js vjs-default-skin vjs-big-play-centered" preload="auto">
+      <video :id="`player${index}`" class="video-js vjs-default-skin vjs-big-play-centered" :poster="item.video_thumb_img" preload="auto">
         <source :src="item.video" type="application/x-mpegURL">
       </video>
     </div>
@@ -81,14 +81,14 @@ export default {
   },
   methods:{
     stopVideo: function(index){
-      if(this.index !== index){
-        let id = `player${this.index}`
-        this.$video(id).pause()
-      }
+      // if(this.index !== index){
+      //   let id = `player${this.index}`
+      //   this.$video(id).pause()
+      // }
     },
     initPlayer:function(){
       let self = this
-      console.log('test',this.$refs.videoBlock)
+      // console.log('test',this.$refs.videoBlock)
       if(this.item.video!=""){
         let dom = this.$refs.videoBlock
         let width = dom.clientWidth
@@ -100,7 +100,7 @@ export default {
           controls: true
         },function(){
           this.on("play",function(){
-            self.$emit("onVideoPlay",{index: self.index})
+            // self.$emit("onVideoPlay",{index: self.index})
           })
         })
       }

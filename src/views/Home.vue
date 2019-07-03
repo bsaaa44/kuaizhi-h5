@@ -35,10 +35,14 @@
           </infinite-loading> -->
         </div>
       </div>
+      <div class='more-tips' v-if='list.length>=5'>
+        <div class='line'></div>
+        <div class='text'>前往快知App查看全部内容</div>
+        <div class='line'></div>
+      </div>
       <div class='fill'></div>
       <button class='open-btn' @click='handleShowPop'>App 内打开</button>
     </div>
-    
     <loading v-if='showLoading'></loading>
   </div>
 
@@ -218,6 +222,22 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+  .more-tips{
+    margin-top 20px
+    display flex;
+    flex-flow row;
+    align-items center;
+    justify-content space-between
+  }
+  .more-tips .text{
+    color #c2c2c2;
+    padding 0 10px
+  }
+  .more-tips .line{
+    flex-grow 1
+    height 1px;
+    background linear-gradient(to bottom,rgba(194,194,194,1),rgba(194,194,194,0))
+  }
   .fill{
     width 100%;
     height 70px;

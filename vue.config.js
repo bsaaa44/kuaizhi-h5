@@ -6,16 +6,24 @@ module.exports = {
         port: 8080,
         // 设置代理
         proxy: {
-            '/': {
+            '/api': {
                 // 目标 API 地址
                 target: 'https://kz.sync163.com/',
                 // 如果要代理 websockets
                 ws: true,
+                secure: true, 
                 // 将主机标头的原点更改为目标URL
                 changeOrigin: true
               //   pathRewrite: {
               //     '^/admin': ''    //代理的路径
               //   }
+            },
+            '/gzh':{
+                target: 'https://kz.sync163.com/',
+                ws: true,
+                secure: true, 
+                // 将主机标头的原点更改为目标URL
+                changeOrigin: true
             }
         }
     },
