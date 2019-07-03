@@ -6,8 +6,8 @@
     </div>
     <div class='card-title'>{{item.title}}</div>
     <div class='content' v-html="item.text.replace(/\n/g, '<br>')"></div>
-    <div class='video-block' v-if='item.video&&item.video!=""' @click.stop>
-      <video :id="`player${index}`" ref='video' class="video-js vjs-default-skin vjs-big-play-centered" preload="auto">
+    <div class='video-block' ref='videoBlock' v-if='item.video&&item.video!=""' @click.stop>
+      <video :id="`player${index}`" class="video-js vjs-default-skin vjs-big-play-centered" preload="auto">
         <source :src="item.video" type="application/x-mpegURL">
       </video>
     </div>
