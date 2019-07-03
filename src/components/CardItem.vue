@@ -88,7 +88,7 @@ export default {
     },
     initPlayer:function(){
       let self = this
-      let dom = this.$refs.videoBlock
+      let dom = this.$refs.videoBlock[0]
       let width = dom.clientWidth
       let height= dom.clientHeight
       if(this.item.video!=""){
