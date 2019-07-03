@@ -6,22 +6,8 @@
     </div>
     <div class='card-title'>{{item.title}}</div>
     <div class='content' v-html="item.text.replace(/\n/g, '<br>')"></div>
-    <!-- <div class='images-block' v-if='item.images.length>0'>
-      <div :class='{
-                    "image-item": true,
-                    "image-2":item.images.length==2,
-                    "image-3":item.images.length==3}'
-      v-for='(it,idx) in item.images' :key='idx'>
-        <img :src='it' :class='{"image-1":true}'/>
-      </div> -->
-    <div class='video-block' ref='videoBlock' v-if='item.video&&item.video!=""' @click.stop>
-      <!-- <video controls="controls" :poster="item.video_thumb_img"
-      x-webkit-airplay="true" x5-video-player-fullscreen="true"
-      playsinline="true" webkit-playsinline
-      x5-video-player-typ="h5">
-        <source type="application/x-mpegURL" :src="item.video">
-      </video> -->
-      <video :id="`player${index}`" class="video-js vjs-default-skin vjs-big-play-centered" preload="auto">
+    <div class='video-block' v-if='item.video&&item.video!=""' @click.stop>
+      <video :id="`player${index}`" ref='video' class="video-js vjs-default-skin vjs-big-play-centered" preload="auto">
         <source :src="item.video" type="application/x-mpegURL">
       </video>
     </div>
@@ -38,7 +24,6 @@
         />
     </div>
     <div class='images-block' v-if='imagesArr.length==1&&item.video==""' @click.stop>
-      <!-- <img v-lazy="imagesArr[0]" class='single-image' :preview='id'> -->
       <img v-lazy="imagesArr[0]" class='single-image' :onerror="imagePlaceholder" @click='handlePreviewImage(imagesArr,0)'>
     </div>
     <a class='website-block' :href='item.url' v-if='item.url&&item.url!=""' @click.stop>
@@ -97,6 +82,7 @@ export default {
   methods:{
     stopVideo: function(index){
       if(this.index !== index){
+        console.log(this.player)
         this.player.pause()
       }
     },
