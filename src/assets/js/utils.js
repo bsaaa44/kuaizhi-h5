@@ -41,8 +41,8 @@ function getCode(param) {
   if(param){
     redirect_url = encodeURIComponent(param)
   }else{
-    redirect_url = encodeURIComponent(`https://kz.sync163.com/webpage/`)
-    // redirect_url = encodeURIComponent(`http://dev.kz.sync163.com/webpage/`)
+    // redirect_url = encodeURIComponent(`https://kz.sync163.com/webpage/`)
+    redirect_url = encodeURIComponent(`http://dev.kz.sync163.com/webpage/`)
   }
   
   const appId = 'wxbcc23d04c3aa4a7c'
