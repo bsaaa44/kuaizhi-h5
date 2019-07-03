@@ -51,7 +51,6 @@
 </template>
 
 <script>
-
 import { ImagePreview } from 'vant';
 import { constants } from 'crypto';
 
@@ -86,7 +85,9 @@ export default {
   destroyed(){
     console.log('离开页面触发')
     console.log('this.player',this.player)
-    this.player.dispose()
+    if(this.player!=""){
+      this.player.dispose()
+    }
   },
   methods:{
     stopVideo: function(index){
