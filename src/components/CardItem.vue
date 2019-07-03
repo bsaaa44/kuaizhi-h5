@@ -83,6 +83,11 @@ export default {
       }
     })
   },
+  destroyed(){
+    console.log('离开页面触发')
+    console.log('this.player',this.player)
+    this.player.dispose()
+  },
   methods:{
     stopVideo: function(index){
       // if(this.index !== index){
