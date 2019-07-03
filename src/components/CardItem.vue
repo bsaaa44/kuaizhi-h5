@@ -76,7 +76,9 @@ export default {
   },
   mounted(){
     this.$nextTick(()=>{
+      console.log('this.player',this.player)
       if(this.player == ""){
+        console.log('进来了')
         this.initPlayer()
       }
     })
