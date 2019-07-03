@@ -10,7 +10,7 @@ import utils from './assets/js/utils.js'
 import { Loading,Popup,Toast } from 'vant';
 import VueLazyload from 'vue-lazyload'
 import Video from 'video.js'
-// import 'videojs-contrib-hls'
+import 'videojs-contrib-hls'
 // import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
 import 'video.js/dist/video-js.css'
