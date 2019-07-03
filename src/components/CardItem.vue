@@ -76,7 +76,9 @@ export default {
   },
   mounted(){
     this.$nextTick(()=>{
-      this.initPlayer()
+      if(this.player == ""){
+        this.initPlayer()
+      }
     })
   },
   methods:{
