@@ -28,7 +28,7 @@
             <img src="../assets/empty.png" class='img-empty'/>
             <p class='text-empty'>机器人正在追踪最新消息</p>
           </div>
-          <card-item class='card-item' v-for='(item,index) in list' :key='index' :id='index' :item='item' :cover='info.icon' :list='list' :index='index' @handleShowPop= "handleShowPop"/>
+          <card-item class='card-item' ref='cardItem' v-for='(item,index) in list' :key='index' :id='index' :item='item' :cover='info.icon' @onVideoPlay='onVideoPlay' :list='list' :index='index' @handleShowPop= "handleShowPop"/>
           <!-- <infinite-loading @infinite="onInfinite" spinner="bubbles">  
             <span slot="no-more"></span> 
             <span slot="no-results"></span>     
@@ -51,6 +51,7 @@ import DownloadBar from "../components/DownloadBar.vue"
 import RobotInfoBlock from "../components/RobotInfoBlock.vue"
 import InfiniteLoading from 'vue-infinite-loading';
 import JoinPop from '../components/JoinPop.vue'
+import { constants } from 'crypto';
 
 export default {
   data(){
@@ -95,6 +96,10 @@ export default {
     }
   },
   methods:{
+    onVideoPlay: function(data){
+      console.log(data)
+      this.$refs.cardItem.stopVideo()
+    },
     checkCode: function(){
       if (this.$global.code != ""||this.$route.query.code) {
         if(this.$global.code == ""){

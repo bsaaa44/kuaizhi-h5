@@ -94,7 +94,11 @@ export default {
     })
   },
   methods:{
+    stopVideo: function(){
+      console.log('停止播放')
+    },
     initPlayer:function(){
+      let self = this
       let dom = this.$refs.videoBlock
       let width = dom.clientWidth
       let height= dom.clientHeight
@@ -107,7 +111,7 @@ export default {
           controls: true
         },function(){
           this.on("play",function(){
-            console.log('播放中')
+            self.$emit("onVideoPlay",{index: this.index})
           })
         })
       }
