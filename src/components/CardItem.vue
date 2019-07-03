@@ -82,8 +82,8 @@ export default {
   methods:{
     stopVideo: function(index){
       if(this.index !== index){
-        console.log(this.player)
-        this.player.pause()
+        let id = `player${this.index}`
+        this.$video(id).pause()
       }
     },
     initPlayer:function(){
