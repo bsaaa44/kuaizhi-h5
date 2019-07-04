@@ -161,15 +161,15 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-  .video-js .vjs-big-play-button{
+  .video-js >>> .vjs-big-play-button{
     width 1.5em !important
     height 1.5em !important
     border-radius 50% !important
     margin-top -1em !important
     margin-left -1em !important
     border 0 !important
-    line-height 2em !important
-    font-size 1.5em !important
+    line-height 1.5em !important
+    font-size 2em !important
   }
   .card-title{
     font-size 15px;
