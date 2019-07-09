@@ -10,7 +10,7 @@ function axiosRequest(method, url, params, data, success, fail) {
     .$ajax({
       method: method,
       url: url,
-      headers: { 'Access-Control-Allow-Origin': '*','from': 'h5' },
+      headers: { 'Access-Control-Allow-Origin': '*', from: 'h5' },
       dataType: 'jsonp',
       data,
       params
@@ -18,14 +18,17 @@ function axiosRequest(method, url, params, data, success, fail) {
     .then(res => {
       if (res.data.errno === 0) {
         success(res)
-      }else{
+      } else {
+        console.log('test', res.data.errmsg)
         fail(res)
+
         Toast(res.data.errmsg)
         //请求错误
       }
     })
     .catch(res => {
-      console.log(res)
+      Toast(res.response.data.errmsg)
+      // console.log(res.response.data.errmsg)
       if (res.response.status == 401) {
         let param = ``
         // getCode(param)
@@ -38,13 +41,13 @@ function axiosRequest(method, url, params, data, success, fail) {
 function getCode(param) {
   // const redirect_url = encodeURIComponent(`https://pdz.sync163.com/webpage/`)
   let redirect_url
-  if(param){
+  if (param) {
     redirect_url = encodeURIComponent(param)
-  }else{
+  } else {
     redirect_url = encodeURIComponent(`https://kz.sync163.com/webpage/`)
     // redirect_url = encodeURIComponent(`http://dev.kz.sync163.com/webpage/`)
   }
-  
+
   const appId = 'wxbcc23d04c3aa4a7c'
   const response_type = 'code'
   const scope = 'snsapi_userinfo'
@@ -53,7 +56,7 @@ function getCode(param) {
   window.location.href = url
 }
 function login(data) {
-  return new Promise((resolve,reject)=>{
+  return new Promise((resolve, reject) => {
     axiosRequest(
       'POST',
       'gzh/login',
@@ -88,7 +91,7 @@ function payRequest(timestamp, nonceStr, pack, signType, paySign, success) {
     }
   })
 }
-function wxConfig(success,data) {
+function wxConfig(success, data) {
   axiosRequest(
     'POST',
     'gzh/jssdk/config',

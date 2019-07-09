@@ -1,16 +1,16 @@
-.divide-line{
+.divide-line {
   position: relative;
   font-size: 16px;
 }
 
-.divide-line:before{
-  content: " ";
+.divide-line:before {
+  content: ' ';
   position: absolute;
   left: 0;
   bottom: 0;
   width: 100%;
   height: 1px;
-  border-top: 1px solid #E5E5E5;
+  border-top: 1px solid #e5e5e5;
   -webkit-transform-origin: 0 0;
   transform-origin: 0 0;
   -webkit-transform: scaleY(0.5);
