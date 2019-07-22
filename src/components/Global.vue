@@ -1,5 +1,5 @@
 <script>
-let hostUrl = 'https://kz.sync163.com/webpage/'
+let hostUrl = 'https://kz.sync163.com/web/'
 // let hostUrl = 'http://dev.kz.sync163.com/webpage/'
 
 let userInfo = ''

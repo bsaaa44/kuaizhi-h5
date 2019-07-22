@@ -11,7 +11,7 @@
               <h1 class="title">{{info.topic.name}}</h1>
               <p class="time">{{info.created_at}}</p>
             </div>
-            <button class="subscript-btn" @click="handleShowPop">订阅</button>
+            <button class="subscript-btn" @click="handleShowPop(1)">订阅</button>
           </div>
           <card-item
             :item="info"
@@ -49,8 +49,9 @@
         </infinite-loading>-->
       </div>
     </div>
-    <button class="open-btn" @click="handleShowPop">App 内打开</button>
+    <button class="open-btn" @click="handleShowPop(2)">App 内打开</button>
     <loading v-if="showLoading"></loading>
+    <android-pop @closePop="closePop()" :showAndroidPop="showAndroidPop"></android-pop>
   </div>
 </template>
 
@@ -62,6 +63,7 @@ import RobotInfoBlock from "../components/RobotInfoBlock.vue";
 import CommentItem from "../components/CommentItem.vue";
 import InfiniteLoading from "vue-infinite-loading";
 import JoinPop from "../components/JoinPop.vue";
+import AndroidPop from "../components/AndroidPop.vue";
 export default {
   data() {
     return {
@@ -71,6 +73,9 @@ export default {
       info: "",
       list: [],
       currentPage: 1,
+      inviteUid: 0,
+      userInfo: "",
+      showAndroidPop: false,
       showJoinPop: false,
       showLoading: false,
       showMoreBtn: false
@@ -83,14 +88,21 @@ export default {
     DownloadBar,
     Loading,
     InfiniteLoading,
-    JoinPop
+    JoinPop,
+    AndroidPop
   },
   created() {
+    if(localStorage.getItem("userInfo")){
+      this.userInfo = localStorage.getItem("userInfo")
+    }
     if (this.checkWxBrowser()) {
-      this.$global.cardId = this.$route.query.id;
+      if (this.$route.query.uid) {
+        this.$global.inviteUid = this.$route.query.uid;
+      }
+      this.$global.cardId = this.$route.params.id;
       this.checkCode();
     } else {
-      this.id = this.$route.query.id;
+      this.id = this.$route.params.id;
       this.showLoading = true;
       this.$nextTick(() => {
         this.getInfo();
@@ -99,6 +111,9 @@ export default {
     }
   },
   methods: {
+    closePop: function() {
+      this.showAndroidPop = false;
+    },
     checkCode: function() {
       if (this.$global.code != "" || this.$route.query.code) {
         if (this.$global.code == "") {
@@ -106,6 +121,7 @@ export default {
         }
         if (sessionStorage.getItem("token")) {
           this.id = this.$global.cardId;
+          this.inviteUid = this.$global.inviteUid;
           console.log("登陆成功");
           this.$nextTick(() => {
             this.getInfo();
@@ -116,11 +132,25 @@ export default {
             code: this.$route.query.code
           };
           this.$utils.login(data).then(res => {
+            console.log("登陆中...");
             sessionStorage.setItem("token", res.data.token);
+            localStorage.setItem("userInfo", res.data.userInfo);
             // this.$global.hasLogin = true
             this.id = this.$global.cardId;
+            this.$global.userInfo = res.data.userInfo;
+            this.userInfo = res.data.userInfo;
+            this.inviteUid = this.$global.inviteUid;
             console.log("登陆成功");
             this.$nextTick(() => {
+              let data = {
+                event: "h5_login",
+                logUserId: res.data.userInfo.id,
+                param: {
+                  cardId: this.id,
+                  inviter: this.inviteUid
+                }
+              };
+              this.$utils.clientLog(data);
               this.getInfo();
               this.getList();
             });
@@ -142,11 +172,30 @@ export default {
         return false;
       }
     },
-    handleShowPop: function() {
+    handleShowPop: function(type) {
       // this.showJoinPop = true
+      if (type === 1) {
+        let data = {
+          event: "h5_subscribe",
+          logUserId: this.userInfo.id,
+          param: {
+            inviter: this.$global.inviteUid
+          }
+        };
+        this.$utils.clientLog(data);
+      } else if (type === 2) {
+        let data = {
+          event: "h5_openApp",
+          logUserId: this.userInfo.id,
+          param: {
+            inviter: this.$global.inviteUid
+          }
+        };
+        this.$utils.clientLog(data);
+      }
       let ua = navigator.userAgent;
       if (ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1) {
-        this.$toast("暂无Android版本");
+        this.showAndroidPop = true;
       } else if (!!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
         this.$router.push({
           path: "/openTips",

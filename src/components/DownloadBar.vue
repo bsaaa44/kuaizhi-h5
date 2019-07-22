@@ -27,6 +27,14 @@ export default {
   },
   methods: {
     handleShowPop: function() {
+      let data = {
+        event: "h5_download",
+        logUserId: this.$global.userInfo.id,
+        param: {
+          inviter: this.$global.inviteUid
+        }
+      };
+      this.$utils.clientLog(data);
       this.$emit("handleShowPop");
     },
     handleScroll: function() {

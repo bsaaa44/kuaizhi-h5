@@ -8,15 +8,15 @@ Vue.use(Router);
 
 export default new Router({
   mode: "history",
-  base: "/webpage",
+  base: "/web",
   routes: [
     {
-      path: "/",
+      path: "/topic/:id",
       name: "home",
       component: Home
     },
     {
-      path: "/cardDetail",
+      path: "/card/:id",
       name: "cardDetail",
       component: CardDetail
     },

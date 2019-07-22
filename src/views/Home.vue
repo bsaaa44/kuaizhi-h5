@@ -9,7 +9,7 @@
       <div id="main">
         <div class="header-block">
           <img class="avatar" :src="info.icon" :onerror="imagePlaceholder" />
-          <button class="subscript-btn" @click="handleShowPop">订阅</button>
+          <button class="subscript-btn" @click="handleShowPop(1)">订阅</button>
         </div>
         <div class="info-block">
           <h1 class="title">{{info.name}}</h1>
@@ -29,7 +29,7 @@
         <div class="topic-list">
           <h2>主题动态</h2>
           <div class="empty-block" v-if="list.length<=0">
-            <img src="../assets/empty.png" class="img-empty" />
+            <img src="../assets/loading.gif" class="img-empty" />
             <p class="text-empty">机器人正在追踪最新消息</p>
           </div>
           <card-item
@@ -58,9 +58,10 @@
         <div class="line"></div>
       </div>
       <div class="fill"></div>
-      <button class="open-btn" @click="handleShowPop">App 内打开</button>
+      <button class="open-btn" @click="handleShowPop(2)">App 内打开</button>
     </div>
     <loading v-if="showLoading"></loading>
+    <android-pop @closePop="closePop()" :showAndroidPop="showAndroidPop"></android-pop>
   </div>
 </template>
 
@@ -71,6 +72,7 @@ import DownloadBar from "../components/DownloadBar.vue";
 import RobotInfoBlock from "../components/RobotInfoBlock.vue";
 import InfiniteLoading from "vue-infinite-loading";
 import JoinPop from "../components/JoinPop.vue";
+import AndroidPop from "../components/AndroidPop.vue";
 import { constants } from "crypto";
 
 export default {
@@ -80,13 +82,16 @@ export default {
         'this.src="' + require("../assets/placeholder.png") + '"',
       topicId: 0,
       imageWidth: 0,
+      showAndroidPop: false,
       scrollLoading: false,
       showLoading: false,
       showJoinPop: false,
+      userInfo: "",
       info: "",
       currentPage: 1,
       list: [],
-      loading: false
+      loading: false,
+      inviteUid: 0
     };
   },
   components: {
@@ -95,21 +100,29 @@ export default {
     DownloadBar,
     RobotInfoBlock,
     InfiniteLoading,
-    JoinPop
+    JoinPop,
+    AndroidPop
   },
   created() {
     // this.$global.topicId = this.$route.query.id
+    console.log(this.$route.params);
     console.log("token", sessionStorage.getItem("token"));
     this.showLoading = true;
+    if (localStorage.getItem("userInfo")) {
+      this.userInfo = localStorage.getItem("userInfo");
+    }
+    if (this.$route.query.uid) {
+      this.$global.inviteUid = this.$route.query.uid;
+    }
     if (this.checkWxBrowser()) {
       // sessionStorage.setItem("topicId",this.$route.query.id)
       if (this.$global.topicId == 0) {
-        this.$global.topicId = this.$route.query.id;
+        this.$global.topicId = this.$route.params.id;
       }
       // this.$global.iosUrl = this.$global.hostUrl + this.$route.fullPath
       this.checkCode();
     } else {
-      this.topicId = this.$route.query.id;
+      this.topicId = this.$route.params.id;
       this.$nextTick(() => {
         this.getDetail();
         this.getList();
@@ -117,6 +130,9 @@ export default {
     }
   },
   methods: {
+    closePop: function() {
+      this.showAndroidPop = false;
+    },
     onVideoPlay: function(data) {
       for (let item of this.$refs.cardItem) {
         item.stopVideo(data.index);
@@ -129,7 +145,7 @@ export default {
         }
         if (sessionStorage.getItem("token")) {
           this.topicId = this.$global.topicId;
-          console.log("登陆成功");
+          this.inviteUid = this.$global.inviteUid;
           this.$nextTick(() => {
             this.getDetail();
             this.getList();
@@ -139,10 +155,23 @@ export default {
             code: this.$route.query.code
           };
           this.$utils.login(data).then(res => {
+            console.log("登陆中...");
             sessionStorage.setItem("token", res.data.token);
+            localStorage.setItem("userInfo", res.data.userInfo);
             this.topicId = this.$global.topicId;
-            console.log("登陆成功");
+            this.$global.userInfo = res.data.userInfo;
+            this.userInfo = res.data.userInfo;
+            this.inviteUid = this.$global.inviteUid;
             this.$nextTick(() => {
+              let data = {
+                event: "h5_login",
+                logUserId: res.data.userInfo.id,
+                param: {
+                  topicId: this.topicId,
+                  inviter: this.inviteUid
+                }
+              };
+              this.$utils.clientLog(data);
               this.getDetail();
               this.getList();
             });
@@ -157,10 +186,29 @@ export default {
         }
       }
     },
-    handleShowPop: function() {
+    handleShowPop: function(type) {
+      if (type === 1) {
+        let data = {
+          event: "h5_subscribe",
+          logUserId: this.userInfo != "" ? this.userInfo.id : undefined,
+          param: {
+            inviter: this.$global.inviteUid
+          }
+        };
+        this.$utils.clientLog(data);
+      } else if (type === 2) {
+        let data = {
+          event: "h5_openApp",
+          logUserId: this.userInfo != "" ? this.userInfo.id : undefined,
+          param: {
+            inviter: this.$global.inviteUid
+          }
+        };
+        this.$utils.clientLog(data);
+      }
       let ua = navigator.userAgent;
       if (ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1) {
-        this.$toast("暂无Android版本");
+        this.showAndroidPop = true;
       } else if (!!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
         this.$router.push({
           path: "/openTips",
@@ -274,7 +322,7 @@ export default {
 
 .fill {
   width: 100%;
-  height: 70px;
+  height: 20px;
 }
 
 #page {
@@ -452,8 +500,8 @@ export default {
 }
 
 .empty-block .img-empty {
-  width: 0.96rem;
-  height: 0.96rem;
+  width: 1.51rem;
+  height: 0.48rem;
   margin-bottom: 0.11rem;
 }
 

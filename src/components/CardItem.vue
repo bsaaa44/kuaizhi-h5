@@ -5,7 +5,10 @@
       <img src="../assets/more.png" class="img-more" @click="handleShowPop" />
     </div>
     <div class="card-title">{{item.title}}</div>
-    <div class="content" v-html="item.text.replace(/\n/g, '<br>')"></div>
+    <div :class="{'content-container':true,'hidden':!isDetailPage}">
+      <div class="content" v-html="item.text.replace(/\n/g, '<br>')" ref="content"></div>
+    </div>
+    <button class="show-more" v-if="showMoreBtn&&!isDetailPage">全文</button>
     <div class="video-block" ref="videoBlock" v-if="item.video&&item.video!=''" @click.stop>
       <video
         :id="`player${index}`"
@@ -44,7 +47,12 @@
         :preview="index"
       />
     </div>
-    <a class="website-block" :href="item.url" v-if="showUrlBlock&&item.url&&item.url!=''" @click.stop>
+    <a
+      class="website-block"
+      :href="item.url"
+      v-if="showUrlBlock&&item.url&&item.url!=''"
+      @click.stop
+    >
       <img class="avatar" :src="item.url_cover" @error="onErrorHandler()" />
       <div class="info">
         <h3 class="title">{{item.url_title}}</h3>
@@ -53,12 +61,12 @@
     </a>
     <div class="tools-block" :style="isDetailPage?'padding:0 0.08rem 0.13rem':''" @click.stop>
       <div class="zan-btn tools-btn" @click="handleShowPop">
-        <img src="../assets/finger.png" class="img-finger" />
-        <span class="count" v-if="item.zanCount>0">{{item.zanCount}}</span>
+        <img :src="item.emoji.top_emoji.emoji|emojiFilter" class="img-finger" />
+        <span class="count" v-if="item.emoji.top_emoji.count>0">{{item.emoji.top_emoji.count}}</span>
       </div>
       <div class="comment-btn tools-btn" @click="handleShowPop">
-        <img src="../assets/message.png" class="img-message" />
-        <span class="count" v-if="item.commentsCount>0">{{item.commentsCount}}</span>
+        <img src="../assets/star.png" class="img-message" />
+        <!-- <span class="count" v-if="item.commentsCount>0">{{item.commentsCount}}</span> -->
       </div>
       <div class="share-btn tools-btn" @click="handleShowPop">
         <img src="../assets/share.png" class="img-share" />
@@ -72,6 +80,7 @@
 export default {
   data() {
     return {
+      showMoreBtn: false,
       imagePlaceholder:
         'this.src="' + require("../assets/placeholder.png") + '"',
       imageWidth: 0,
@@ -93,9 +102,16 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
+      console.log("this.cover", this.cover);
       if (this.player == "") {
         this.initPlayer();
       }
+      // console.log()
+      let contentHeight = this.$refs.content.offsetHeight;
+      if (contentHeight >= 21 * 8 + 8) {
+        this.showMoreBtn = true;
+      }
+      // let contentHeight =
     });
   },
   destroyed() {
@@ -136,7 +152,11 @@ export default {
     },
     onErrorHandler: function() {
       let img = event.srcElement;
-      img.src = this.cover;
+      if (this.cover != "") {
+        img.src = this.cover;
+      } else {
+        img.src = require("../assets/placeholder.png");
+      }
     },
     handleShowPop: function() {
       this.$emit("handleShowPop");
@@ -144,15 +164,19 @@ export default {
     navToDetail: function(id) {
       this.$router.push({
         name: "cardDetail",
-        query: {
+        params: {
           id
         }
       });
     }
   },
-  filters: {},
+  filters: {
+    emojiFilter: function(value) {
+      return require(`../assets/emoji_${value}.png`);
+    }
+  },
   props: {
-    showUrlBlock:{
+    showUrlBlock: {
       type: Boolean,
       default: true
     },
@@ -233,9 +257,31 @@ video {
   height: 0.2rem;
 }
 
+.item-block .hidden {
+  max-height: 180px;
+  overflow: hidden;
+}
+
+.item-block .content-container {
+  position: relative;
+}
+
+.show-more {
+  font-size: 14px;
+  line-height: 21px;
+  color: #007AFF;
+  padding: 0;
+  border: 0;
+  background: #fff;
+}
+
 .item-block .content {
   // white-space pre;
-  margin-top: 0.12rem;
+  // display: -webkit-box;
+  // -webkit-box-orient: vertical;
+  // -webkit-line-clamp: 8;
+  // overflow: hidden;
+  margin-top: 12px;
   font-size: 14px;
   line-height: 21px;
   color: #333;
@@ -366,7 +412,7 @@ video {
   flex-flow: row;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 0.13rem;
+  padding: 0 0.05rem 0.13rem;
   box-sizing: border-box;
 }
 
@@ -380,14 +426,14 @@ video {
 }
 
 .item-block .tools-block .img-finger {
-  width: 0.16rem;
-  height: 0.16rem;
-  margin-right: 0.08rem;
+  width: 0.22rem;
+  height: 0.22rem;
+  // margin-right: 0.08rem;
 }
 
 .item-block .tools-block .img-message {
-  width: 0.16rem;
-  height: 0.16rem;
+  width: 0.22rem;
+  height: 0.22rem;
   margin-right: 0.08rem;
 }
 
@@ -400,5 +446,6 @@ video {
   font-size: 13px;
   line-height: 19px;
   color: #999;
+  margin-left: 0.05rem;
 }
 </style>

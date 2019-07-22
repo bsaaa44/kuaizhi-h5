@@ -17,9 +17,9 @@ import 'video.js/dist/video-js.css'
 import './assets/css/reset.css'
 import './assets/css/global.css'
 
-axios.defaults.baseURL = 'https://kz.sync163.com'
+// axios.defaults.baseURL = 'https://kz.sync163.com'
 // axios.defaults.baseURL = 'http://dev.kz.sync163.com'
-// axios.defaults.baseURL = '/'
+axios.defaults.baseURL = '/'
 axios.defaults.headers.common['token'] = 'asdfasdfasdf'
 
 Vue.use(Loading)

@@ -44,7 +44,7 @@ function getCode(param) {
   if (param) {
     redirect_url = encodeURIComponent(param)
   } else {
-    redirect_url = encodeURIComponent(`https://kz.sync163.com/webpage/`)
+    redirect_url = encodeURIComponent(`https://kz.sync163.com/web/`)
     // redirect_url = encodeURIComponent(`http://dev.kz.sync163.com/webpage/`)
   }
 
@@ -74,6 +74,9 @@ function login(data) {
       }
     )
   })
+}
+function clientLog(data) {
+  axiosRequest('POST', 'api/client-log', '', data, res => {}, res => {})
 }
 function payRequest(timestamp, nonceStr, pack, signType, paySign, success) {
   console.log(typeof timestamp)
@@ -123,5 +126,6 @@ export default {
   getCode,
   payRequest,
   login,
-  wxConfig
+  wxConfig,
+  clientLog
 }
