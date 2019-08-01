@@ -39,9 +39,9 @@ export default {
       },
       false
     );
-    if (this.checkBrowser() == "wx") {
+    if (this.checkBrowser() == "wx" || this.checkBrowser() == "qq") {
       this.showOpenTips = true;
-    } else if (this.checkBrowser() == "safari") {
+    }else if (this.checkBrowser() == "safari") {
       if(window.location.href.indexOf("kz.sync163.com")>=0){
         var start = Date.now();
         setTimeout(function() {
@@ -105,6 +105,9 @@ export default {
       // let is360 = checkMime("type", "application/vnd.chromium.remoting-viewer");
       if (ua.match(/MicroMessenger/i) == "micromessenger") {
         return "wx";
+      }
+      if(ua.match(/QQ/i) == "qq"){
+        return "qq";
       }
       if (!isChrome && isSafari) {
         return "safari";

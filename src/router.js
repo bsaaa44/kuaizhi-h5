@@ -14,6 +14,7 @@ export default new Router({
       path: "/topic/:id",
       name: "home",
       component: Home
+      // component: resolve=>require(["./views/Home.vue"],resolve)
     },
     {
       path: "/card/:id",

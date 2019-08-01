@@ -9,17 +9,17 @@ import global from './components/Global.vue'
 import utils from './assets/js/utils.js'
 import { Loading, Popup, Toast } from 'vant'
 import VueLazyload from 'vue-lazyload'
-import Video from 'video.js'
-import 'videojs-contrib-hls'
+// import Video from 'video.js'
+// import 'videojs-contrib-hls'
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
 import 'video.js/dist/video-js.css'
 import './assets/css/reset.css'
 import './assets/css/global.css'
 
-// axios.defaults.baseURL = 'https://kz.sync163.com'
+axios.defaults.baseURL = 'https://kz.sync163.com'
 // axios.defaults.baseURL = 'http://dev.kz.sync163.com'
-axios.defaults.baseURL = '/'
+// axios.defaults.baseURL = '/'
 axios.defaults.headers.common['token'] = 'asdfasdfasdf'
 
 Vue.use(Loading)
@@ -67,7 +67,7 @@ Vue.use(VueLazyload, {
 Vue.prototype.$utils = utils
 Vue.prototype.$ajax = axios
 Vue.prototype.$global = global
-Vue.prototype.$video = Video
+// Vue.prototype.$video = Video
 
 Vue.config.productionTip = false
 

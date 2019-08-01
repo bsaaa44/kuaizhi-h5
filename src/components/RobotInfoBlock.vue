@@ -4,7 +4,7 @@
       <img
         :class="{'avatar-type-1':robots.length == 1,
                     'avatar-type-2':robots.length>1&&robots.length<5,
-                    'avatar-type-3':robots.length>=5&&robots.length<10,
+                    'avatar-type-3':robots.length>=5,
                     'avatar':true
       }"
         v-for="(item,index) in robots"

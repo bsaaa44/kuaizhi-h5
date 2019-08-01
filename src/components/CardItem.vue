@@ -14,7 +14,7 @@
         :id="`player${index}`"
         class="video-js vjs-default-skin vjs-big-play-centered"
         :poster="item.video_thumb_img"
-        preload="auto"
+        preload="none"
       >
         <source :src="item.video" type="application/x-mpegURL" />
       </video>
@@ -134,7 +134,7 @@ export default {
         let width = dom.clientWidth;
         let height = dom.clientHeight;
         let id = `player${this.index}`;
-        let player = this.$video(
+        let player = videojs(
           id,
           {
             width,
