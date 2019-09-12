@@ -140,7 +140,7 @@ export default {
     },
     checkBrowser: function() {
       let ua = navigator.userAgent.toLowerCase();
-      alert("ua",ua)
+      alert(ua)
       let isChrome = ua.indexOf("chrome") != -1;
       let isSafari = ua.indexOf("safari") != -1;
       let isAndroid =
