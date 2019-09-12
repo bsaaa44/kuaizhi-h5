@@ -140,7 +140,6 @@ export default {
     },
     checkBrowser: function() {
       let ua = navigator.userAgent.toLowerCase();
-      alert(ua)
       let isChrome = ua.indexOf("chrome") != -1;
       let isSafari = ua.indexOf("safari") != -1;
       let isAndroid =
@@ -153,7 +152,6 @@ export default {
         return "wx";
       }
       if (isAndroid) {
-        alert("安卓")
         return "android";
       }
       if (ua.match(/QQ/i) == "qq") {
