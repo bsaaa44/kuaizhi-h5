@@ -151,11 +151,12 @@ export default {
       if (ua.match(/MicroMessenger/i) == "micromessenger") {
         return "wx";
       }
+      if (isAndroid) {
+        alert("安卓")
+        return "android";
+      }
       if (ua.match(/QQ/i) == "qq") {
         return "qq";
-      }
-      if (isAndroid) {
-        return "android";
       }
       if (!isChrome && isSafari) {
         return "safari";
