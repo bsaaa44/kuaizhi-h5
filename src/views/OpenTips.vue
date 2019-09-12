@@ -118,8 +118,8 @@ export default {
       var t = setTimeout(function() {
         var endTime = Date.now();
         if (!startTime || endTime - startTime < 600 + 200) {
-          window.location.href = "www.baidu.com";
-          alert("请先下载app");
+          // window.location.href = "www.baidu.com";
+          // alert("请先下载app");
         }
       }, 600);
       document.addEventListener(
@@ -151,11 +151,11 @@ export default {
         ua.indexOf("Adr") > -1;
       // let is360 = checkMime("type", "application/vnd.chromium.remoting-viewer");
       if (isAndroid) {
-        alert("安卓");
+        // alert("安卓");
         return "android";
       }
       if (ua.match(/MicroMessenger/i) == "micromessenger") {
-        alert("微信");
+        // alert("微信");
         return "wx";
       }
       if (ua.match(/QQ/i) == "qq") {
