@@ -139,9 +139,7 @@ export default {
       });
     },
     checkBrowser: function() {
-      console.log("进来了");
       let ua = navigator.userAgent.toLowerCase();
-      alert(ua);
       let isChrome = ua.indexOf("chrome") != -1;
       let isSafari = ua.indexOf("safari") != -1;
       let isAndroid =
@@ -150,16 +148,14 @@ export default {
         ua.indexOf("Android") > -1 ||
         ua.indexOf("Adr") > -1;
       // let is360 = checkMime("type", "application/vnd.chromium.remoting-viewer");
-      if (isAndroid) {
-        // alert("安卓");
-        return "android";
-      }
       if (ua.match(/MicroMessenger/i) == "micromessenger") {
-        // alert("微信");
         return "wx";
       }
       if (ua.match(/QQ/i) == "qq") {
         return "qq";
+      }
+      if (isAndroid) {
+        return "android";
       }
       if (!isChrome && isSafari) {
         return "safari";
