@@ -16,33 +16,41 @@ export default {
     };
   },
   created() {
-    window.addEventListener(
-      "pagehide",
-      function() {
-        clearTimeout(this.timer);
-      },
-      false
-    );
-    document.addEventListener(
-      "visibilitychange",
-      function() {
-        var tag = document.hidden || document.webkitHidden;
-        tag && clearTimeout(this.timer);
-      },
-      false
-    );
-    document.addEventListener(
-      "webkitvisibilitychange",
-      function() {
-        var tag = document.hidden || document.webkitHidden;
-        tag && clearTimeout(this.timer);
-      },
-      false
-    );
-    if (this.checkBrowser() == "wx" || this.checkBrowser() == "qq") {
+    if (this.checkBrowser() == "android") {
+      this.androidOpenApp();
+    } else if (this.checkBrowser() == "wx" || this.checkBrowser() == "qq") {
       this.showOpenTips = true;
-    }else if (this.checkBrowser() == "safari") {
-      if(window.location.href.indexOf("kz.sync163.com")>=0){
+      // this.androidOpenApp();
+    } else if (this.checkBrowser() == "safari") {
+      this.iosOpenApp();
+    }
+  },
+  methods: {
+    iosOpenApp: function() {
+      window.addEventListener(
+        "pagehide",
+        function() {
+          clearTimeout(this.timer);
+        },
+        false
+      );
+      document.addEventListener(
+        "visibilitychange",
+        function() {
+          var tag = document.hidden || document.webkitHidden;
+          tag && clearTimeout(this.timer);
+        },
+        false
+      );
+      document.addEventListener(
+        "webkitvisibilitychange",
+        function() {
+          var tag = document.hidden || document.webkitHidden;
+          tag && clearTimeout(this.timer);
+        },
+        false
+      );
+      if (window.location.href.indexOf("kz.sync163.com") >= 0) {
         var start = Date.now();
         setTimeout(function() {
           // 必须要使用settimeout
@@ -66,47 +74,91 @@ export default {
         }
         if (Date.now() - start > 1500 + 200) {
         } else {
-          window.location.href = "https://apps.apple.com/cn/app/%E5%BF%AB%E7%9F%A5-%E8%AE%A9%E4%BF%A1%E6%81%AF%E8%8E%B7%E5%8F%96%E6%9B%B4%E9%AB%98%E6%95%88/id1465578855";
+          alert("开始尝试跳转");
+          window.location.href =
+            "https://apps.apple.com/cn/app/%E5%BF%AB%E7%9F%A5-%E8%AE%A9%E4%BF%A1%E6%81%AF%E8%8E%B7%E5%8F%96%E6%9B%B4%E9%AB%98%E6%95%88/id1465578855";
         }
       }, 1500);
-    }
-    // window.addEventListener("pagehide", function() {
-    //   console.log('进来了')
-    //   clearTimeout(this.timer);
-    // }, false);
-    // this.id = this.$route.query.id;
-    // this.page = this.$route.query.page;
-    // this.$nextTick(() => {
-    //   if (this.checkBrowser() == "wx") {
-    //     this.showOpenTips = true;
-    //   } else if (this.checkBrowser() == "safari") {
-    //     let url = window.location.href.replace("kz.sync163.com", "kuaizhi.app");
-    //     window.location.href = url;
-    //     let loadDateTime = Date.now();
-    //     this.timer = setTimeout(() => {
-    //       if(!document.hidden){
-    //         window.location.href = "https://testflight.apple.com/join/hFuy6byk";
-    //       }
-    //       // let timeOutDateTime = Date.now();
-    //       // if (timeOutDateTime - loadDateTime < 1000) {
-    //       //   window.location.href = "https://testflight.apple.com/join/hFuy6byk";
-    //       // }
-    //       // console.log("是safari浏览器尝试跳转失败，跳appstore");
-    //     }, 25);
-    // }
-    // });
-  },
-  methods: {
+    },
+    androidOpenApp: function() {
+      var createIframe = (function() {
+        var iframe;
+        return function() {
+          if (iframe) {
+            return iframe;
+          } else {
+            iframe = document.createElement("iframe");
+            iframe.style.display = "none";
+            document.body.appendChild(iframe);
+            return iframe;
+          }
+        };
+      })();
+      let openIframe = createIframe();
+
+      // if (isWeiXin()) {
+      //   //如果是微信，跳应用宝
+      //   window.location.href = "应用宝链接";
+      // } else {
+      //如果不是微信，某秒之后打不开（说明没有下载app）就直接下载
+      let url = "";
+      if (this.$route.query.page == "TopicListViewController") {
+        url = `kuaizhi://TopicListViewController?id=${this.$route.query.id}`;
+      } else {
+        url = `kuaizhi://FeedDetailViewController?id=${this.$route.query.id}`;
+      }
+      if (isChrome) {
+        //chrome浏览器用iframe打不开得直接去打开，算一个坑
+        window.location.href = url;
+      } else {
+        //抛出你的scheme
+        openIframe.src = url;
+      }
+      var startTime = Date.now();
+      var t = setTimeout(function() {
+        var endTime = Date.now();
+        if (!startTime || endTime - startTime < 600 + 200) {
+          window.location.href = "www.baidu.com";
+          alert("请先下载app");
+        }
+      }, 600);
+      document.addEventListener(
+        "visibilitychange webkitvisibilitychange",
+        function() {
+          var tag = document.hidden || document.webkitHidden;
+          if (tag) {
+            clearTimeout(t);
+          }
+        }
+      );
+      window.addEventListener("pagehide", function() {
+        clearTimeout(t);
+      });
+      window.addEventListener("blur", function() {
+        clearTimeout(t);
+      });
+    },
     checkBrowser: function() {
       console.log("进来了");
       let ua = navigator.userAgent.toLowerCase();
+      alert(ua);
       let isChrome = ua.indexOf("chrome") != -1;
       let isSafari = ua.indexOf("safari") != -1;
+      let isAndroid =
+        ua.indexOf("android") > -1 ||
+        ua.indexOf("adr") > -1 ||
+        ua.indexOf("Android") > -1 ||
+        ua.indexOf("Adr") > -1;
       // let is360 = checkMime("type", "application/vnd.chromium.remoting-viewer");
+      if (isAndroid) {
+        alert("安卓");
+        return "android";
+      }
       if (ua.match(/MicroMessenger/i) == "micromessenger") {
+        alert("微信");
         return "wx";
       }
-      if(ua.match(/QQ/i) == "qq"){
+      if (ua.match(/QQ/i) == "qq") {
         return "qq";
       }
       if (!isChrome && isSafari) {

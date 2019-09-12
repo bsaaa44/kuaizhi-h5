@@ -11,7 +11,7 @@
               <h1 class="title">{{info.topic.name}}</h1>
               <p class="time">{{info.created_at}}</p>
             </div>
-            <button class="subscript-btn" @click="handleShowPop(1)">订阅</button>
+            <button class="subscript-btn" @click="handleShowPop('subscribe')">订阅</button>
           </div>
           <card-item
             :item="info"
@@ -49,7 +49,7 @@
         </infinite-loading>-->
       </div>
     </div>
-    <button class="open-btn" @click="handleShowPop(2)">App 内打开</button>
+    <button class="open-btn" @click="handleShowPop('open')">App 内打开</button>
     <loading v-if="showLoading"></loading>
     <android-pop @closePop="closePop()" :showAndroidPop="showAndroidPop"></android-pop>
   </div>
@@ -64,6 +64,7 @@ import CommentItem from "../components/CommentItem.vue";
 import InfiniteLoading from "vue-infinite-loading";
 import JoinPop from "../components/JoinPop.vue";
 import AndroidPop from "../components/AndroidPop.vue";
+import { setTimeout } from "timers";
 export default {
   data() {
     return {
@@ -92,8 +93,11 @@ export default {
     AndroidPop
   },
   created() {
-    if(localStorage.getItem("userInfo")){
-      this.userInfo = localStorage.getItem("userInfo")
+    if (localStorage.getItem("userInfo")) {
+      this.userInfo = localStorage.getItem("userInfo");
+    }
+    if (this.$global.userInfo != "") {
+      this.userInfo = this.$global.userInfo;
     }
     if (this.checkWxBrowser()) {
       if (this.$route.query.uid) {
@@ -174,7 +178,7 @@ export default {
     },
     handleShowPop: function(type) {
       // this.showJoinPop = true
-      if (type === 1) {
+      if (type == "subscribe") {
         let data = {
           event: "h5_subscribe",
           logUserId: this.userInfo.id,
@@ -183,7 +187,7 @@ export default {
           }
         };
         this.$utils.clientLog(data);
-      } else if (type === 2) {
+      } else if (type == "open") {
         let data = {
           event: "h5_openApp",
           logUserId: this.userInfo.id,
@@ -195,16 +199,30 @@ export default {
       }
       let ua = navigator.userAgent;
       if (ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1) {
-        this.showAndroidPop = true;
+        // this.showAndroidPop = true;
+        setTimeout(() => {
+          this.$router.push({
+            path: "/openTips",
+            query: {
+              page: "FeedDetailViewController",
+              id: this.id
+            }
+          });
+          window.location = window.location;
+        }, 500);
       } else if (!!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
-        this.$router.push({
-          path: "/openTips",
-          query: {
-            page: "FeedDetailViewController",
-            id: this.id
-          }
-        });
-        window.location = window.location;
+        setTimeout(() => {
+          this.$router.push({
+            path: "/openTips",
+            query: {
+              page: "FeedDetailViewController",
+              id: this.id
+            }
+          });
+          window.location = window.location;
+        }, 500);
+      } else {
+        window.location.href = "https://kzfeed.com";
       }
     },
     handleClosePop: function() {
@@ -234,6 +252,15 @@ export default {
         data,
         res => {
           this.info = res.data.info;
+          if (res.data.info.title == "") {
+            if (res.data.info.url_title && res.data.info.url_title != "") {
+              document.title = `${res.data.info.url_title} - 快知APP`;
+            } else {
+              document.title = `来自${res.data.info.topic.name} - 快知APP`;
+            }
+          } else {
+            document.title = `${res.data.info.title} - 快知APP`;
+          }
           this.$nextTick(() => {
             this.showLoading = false;
           });
@@ -282,6 +309,7 @@ export default {
 
 <style lang="stylus" scoped>
 .open-btn {
+  cursor pointer
   position: fixed;
   bottom: 0.8rem;
   left: 50%;
@@ -315,8 +343,8 @@ export default {
 }
 
 .robot-contain {
-  width: 91.47%;
-  // width 3.43rem;
+  // width: 91.47%;
+  width: 3.43rem;
   background: #fff;
   box-shadow: 0 0.02rem 0.1rem 0 rgba(218, 218, 218, 0.5);
   border-radius: 0.1rem;
@@ -331,6 +359,7 @@ export default {
 }
 
 .robot-contain .info-block .avatar {
+  object-fit: cover;
   width: 0.34rem;
   height: 0.34rem;
   border-radius: 0.03rem;
@@ -355,6 +384,7 @@ export default {
 }
 
 .robot-contain .info-block .subscript-btn {
+  cursor pointer
   flex-shrink: 0;
   border: 0;
   width: 0.6rem;
@@ -370,8 +400,8 @@ export default {
 }
 
 .robot-info-block {
-  width: 91.47%;
-  // width 3.43rem;
+  // width: 91.47%;
+  width: 3.43rem;
   height: 0.56rem;
   background: #fff;
   box-shadow: 0 0.02rem 0.1rem 0 rgba(218, 218, 218, 0.5);

@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { setTimeout } from 'timers';
 export default {
   data() {
     return {
@@ -35,7 +36,9 @@ export default {
         }
       };
       this.$utils.clientLog(data);
-      this.$emit("handleShowPop");
+      setTimeout(()=>{
+        this.$emit("handleShowPop");
+      },500)
     },
     handleScroll: function() {
       let scroll =
@@ -90,6 +93,7 @@ export default {
 }
 
 .download-bar .dl-btn {
+  cursor pointer
   padding: 0;
   // width 0.6rem
   height: 0.32rem;

@@ -9,7 +9,7 @@
       <div id="main">
         <div class="header-block">
           <img class="avatar" :src="info.icon" :onerror="imagePlaceholder" />
-          <button class="subscript-btn" @click="handleShowPop(1)">订阅</button>
+          <button class="subscript-btn" @click="handleShowPop('subscribe')">订阅</button>
         </div>
         <div class="info-block">
           <h1 class="title">{{info.name}}</h1>
@@ -58,7 +58,7 @@
         <div class="line"></div>
       </div>
       <div class="fill"></div>
-      <button class="open-btn" @click="handleShowPop(2)">App 内打开</button>
+      <button class="open-btn" @click="handleShowPop('open')">App 内打开</button>
     </div>
     <loading v-if="showLoading"></loading>
     <android-pop @closePop="closePop()" :showAndroidPop="showAndroidPop"></android-pop>
@@ -74,6 +74,7 @@ import InfiniteLoading from "vue-infinite-loading";
 import JoinPop from "../components/JoinPop.vue";
 import AndroidPop from "../components/AndroidPop.vue";
 import { constants } from "crypto";
+import { setTimeout } from "timers";
 
 export default {
   data() {
@@ -105,11 +106,12 @@ export default {
   },
   created() {
     // this.$global.topicId = this.$route.query.id
-    console.log(this.$route.params);
-    console.log("token", sessionStorage.getItem("token"));
     this.showLoading = true;
     if (localStorage.getItem("userInfo")) {
       this.userInfo = localStorage.getItem("userInfo");
+    }
+    if (this.$global.userInfo != "") {
+      this.userInfo = this.$global.userInfo;
     }
     if (this.$route.query.uid) {
       this.$global.inviteUid = this.$route.query.uid;
@@ -187,7 +189,7 @@ export default {
       }
     },
     handleShowPop: function(type) {
-      if (type === 1) {
+      if (type == "subscribe") {
         let data = {
           event: "h5_subscribe",
           logUserId: this.userInfo != "" ? this.userInfo.id : undefined,
@@ -196,7 +198,7 @@ export default {
           }
         };
         this.$utils.clientLog(data);
-      } else if (type === 2) {
+      } else if (type == "open") {
         let data = {
           event: "h5_openApp",
           logUserId: this.userInfo != "" ? this.userInfo.id : undefined,
@@ -208,16 +210,30 @@ export default {
       }
       let ua = navigator.userAgent;
       if (ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1) {
-        this.showAndroidPop = true;
+        // this.showAndroidPop = true;
+        setTimeout(() => {
+          this.$router.push({
+            path: "/openTips",
+            query: {
+              page: "TopicListViewController",
+              id: this.topicId
+            }
+          });
+          window.location = window.location;
+        }, 500);
       } else if (!!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/)) {
-        this.$router.push({
-          path: "/openTips",
-          query: {
-            page: "TopicListViewController",
-            id: this.topicId
-          }
-        });
-        window.location = window.location;
+        setTimeout(() => {
+          this.$router.push({
+            path: "/openTips",
+            query: {
+              page: "TopicListViewController",
+              id: this.topicId
+            }
+          });
+          window.location = window.location;
+        }, 500);
+      } else {
+        window.location.href = "https://kzfeed.com";
       }
     },
     handleClosePop: function() {
@@ -246,7 +262,21 @@ export default {
         "",
         data,
         res => {
+          let arr = [];
+          for (let i of res.data.info.robots) {
+            if (arr.length == 0) {
+              arr.push(i);
+            } else {
+              for (let j of arr) {
+                if (j.name != i.name) {
+                  arr.push(i);
+                }
+              }
+            }
+          }
+          res.data.info.robots = arr;
           this.info = res.data.info;
+          document.title = `${res.data.info.name}-快知`;
           this.$nextTick(() => {
             this.showLoading = false;
           });
@@ -330,6 +360,7 @@ export default {
 }
 
 .open-btn {
+  cursor: pointer;
   z-index: 2;
   position: fixed;
   bottom: 0.8rem;
@@ -399,6 +430,7 @@ export default {
 }
 
 #main .header-block .subscript-btn {
+  cursor: pointer;
   display: flex;
   flex-flow: row;
   justify-content: center;

@@ -53,7 +53,7 @@
       v-if="showUrlBlock&&item.url&&item.url!=''"
       @click.stop
     >
-      <img class="avatar" :src="item.url_cover" @error="onErrorHandler()" />
+      <img class="avatar" :src="item.url_cover|coverFilter" @error="onErrorHandler()" />
       <div class="info">
         <h3 class="title">{{item.url_title}}</h3>
         <p class="desc" v-if="item.url_desc!=''">{{item.url_desc}}</p>
@@ -171,6 +171,13 @@ export default {
     }
   },
   filters: {
+    coverFilter: function(value){
+      if(value.indexOf("cdnv2")>=0){
+        return value+'/url_cover'
+      }else{
+        return value
+      }
+    },
     emojiFilter: function(value) {
       return require(`../assets/emoji_${value}.png`);
     }
@@ -232,7 +239,7 @@ export default {
 }
 
 video {
-  object-fit: cover;
+  // object-fit: cover;
   // width 100% !important
   // height 1.79rem !important
   border-radius: 0.04rem !important;
