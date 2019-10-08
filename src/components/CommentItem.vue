@@ -11,13 +11,16 @@
         </button>
       </div>
       <div class="content-block">{{item.content}}</div>
+      <!-- <img v-if="item.image&&item.image!=''" :src="item.image" class="content-image" preview="1" /> -->
+      <img v-if="item.image&&item.image!=''" :src="item.image"/>
       <div class="reply-block" v-if="item.comments&&item.comments.length>0">
         <template v-for="(itm,idx) in item.comments">
           <p class="reply-item" :key="itm.id">
-            <span class="name">{{itm.sender_name}}</span> :
+            <span class="name">{{itm.sender_name}}</span>
+            <!-- <span class="reply" v-if="!itm.replyer_name">:</span> -->
             <span class="reply" v-if="itm.replyer_name">
               回复
-              <span class="name">{{itm.replyer_name}}</span>
+              <span class="name">{{itm.replyer_name}}</span> :
             </span>
             <span class="content-text">{{itm.content}}</span>
             <template v-if="itm.image!=''">
@@ -27,7 +30,7 @@
           </p>
           <div class="fill-block" :key="idx" v-if="item.comments&&idx!=item.comments.length-1"></div>
         </template>
-        <p class="show-more" v-if="item.comments.length>5" @click="handleShowPop">查看所有评论</p>
+        <p class="show-more" v-if="item.comment_count>2" @click="handleShowPop">查看所有评论</p>
       </div>
       <div class="divide-line"></div>
     </div>
@@ -67,6 +70,7 @@ export default {
   border-radius: 50%;
   margin-right: 0.12rem;
   margin-top: 0.02rem;
+  flex-shrink: 0;
 }
 
 .card-item .right-container {
@@ -174,5 +178,9 @@ export default {
 
 .card-item .right-container .divide-line {
   margin-top: 0.12rem;
+}
+
+.content-image {
+  width: 1.28rem;
 }
 </style>

@@ -9,8 +9,6 @@ import global from './components/Global.vue'
 import utils from './assets/js/utils.js'
 import { Loading, Popup, Toast } from 'vant'
 import VueLazyload from 'vue-lazyload'
-// import Video from 'video.js'
-// import 'videojs-contrib-hls'
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
 import 'video.js/dist/video-js.css'
@@ -48,21 +46,6 @@ Vue.use(VueLazyload, {
     }
   }
 })
-
-// Vue.prototype.$preview.on('gettingData',function(index,item){
-//   console.log('item',item)
-//   // if(item.src.indexOf('/thumb')>=0){
-//   //   item.src = item.src.replace("/thumb","")
-//   // }
-//   // let img = new Image()
-//   // img.src = item.src
-//   // img.onload = function(){
-//   //   item.w = img.width/10
-//   //   item.h = img.height/10
-//   // }
-//   // Vue.prototype.$preview.self.updateSize()
-//   // console.log(Vue.prototype.$preview)
-// })
 
 Vue.prototype.$utils = utils
 Vue.prototype.$ajax = axios

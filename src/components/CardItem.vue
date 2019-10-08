@@ -9,7 +9,12 @@
       <div class="content" v-html="item.text.replace(/\n/g, '<br>')" ref="content"></div>
     </div>
     <button class="show-more" v-if="showMoreBtn&&!isDetailPage">全文</button>
-    <div class="video-block" ref="videoBlock" v-if="item.video&&item.video!=''" @click.stop>
+    <div
+      class="video-block"
+      ref="videoBlock"
+      v-if="item.video&&item.video!=''&&item.bilibili_video_id==0"
+      @click.stop
+    >
       <video
         :id="`player${index}`"
         class="video-js vjs-default-skin vjs-big-play-centered"
@@ -18,6 +23,19 @@
       >
         <source :src="item.video" type="application/x-mpegURL" />
       </video>
+    </div>
+    <div v-if="item.bilibili_video_id!=0" class="iframe-block">
+      <iframe
+        :src="`//player.bilibili.com/player.html?aid=${item.bilibili_video_id}&page=1&cid=118131744`"
+        scrolling="no"
+        border="0"
+        frameborder="no"
+        framespacing="0"
+        webkitallowfullscreen="true"
+        mozallowfullscreen="true"
+        allowfullscreen="true"
+        class="video-iframe"
+      ></iframe>
     </div>
     <div class="images-block" v-if="imagesArr.length>1&&item.video==''" @click.stop>
       <img
@@ -171,11 +189,11 @@ export default {
     }
   },
   filters: {
-    coverFilter: function(value){
-      if(value.indexOf("cdnv2")>=0){
-        return value+'/url_cover'
-      }else{
-        return value
+    coverFilter: function(value) {
+      if (value.indexOf("cdnv2") >= 0) {
+        return value + "/url_cover";
+      } else {
+        return value;
       }
     },
     emojiFilter: function(value) {
@@ -236,6 +254,21 @@ export default {
   height: 1.79rem !important;
   border-radius: 0.04rem !important;
   overflow: hidden;
+}
+
+.iframe-block {
+  width: 100% !important;
+  margin-top: 0.08rem;
+  height: 1.79rem;
+  border-radius: 0.04rem;
+  overflow: hidden;
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border-radius: 0.04rem;
+    overflow: hidden;
+  }
 }
 
 video {

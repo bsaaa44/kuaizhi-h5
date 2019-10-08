@@ -41,7 +41,7 @@
         />
         <template v-if="showMoreBtn">
           <div class="divide-line"></div>
-          <div class="show-more">查看更多评论</div>
+          <div class="show-more" @click="handleShowPop()">查看更多评论</div>
         </template>
         <!-- <infinite-loading @infinite="onInfinite" ref="infiniteLoading" spinner="bubbles">
           <span slot="no-more"></span> 

@@ -1,6 +1,6 @@
 <template>
   <div id="main">
-    <img src="../assets/tips.png" class="img-tips" v-if="showOpenTips" />
+    <img :src="tipsImage" class="img-tips" v-if="showOpenTips" />
   </div>
 </template>
 
@@ -23,6 +23,17 @@ export default {
       // this.androidOpenApp();
     } else if (this.checkBrowser() == "safari") {
       this.iosOpenApp();
+    }
+  },
+  computed: {
+    tipsImage: function() {
+      let ua = navigator.userAgent;
+      if (ua.indexOf("Android") > -1 || ua.indexOf("Adr") > -1) {
+        return "https://image.sync163.com/feedbot/feedbot-h5-tips2.png";
+      } else {
+        return require("../assets/tips.png");
+      }
+      //
     }
   },
   methods: {
@@ -74,7 +85,6 @@ export default {
         }
         if (Date.now() - start > 1500 + 200) {
         } else {
-          alert("开始尝试跳转");
           window.location.href =
             "https://apps.apple.com/cn/app/%E5%BF%AB%E7%9F%A5-%E8%AE%A9%E4%BF%A1%E6%81%AF%E8%8E%B7%E5%8F%96%E6%9B%B4%E9%AB%98%E6%95%88/id1465578855";
         }
@@ -96,6 +106,7 @@ export default {
       })();
       let openIframe = createIframe();
       let isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
+      let isUC = window.navigator.userAgent.indexOf("UCBrowser") !== -1;
       // if (isWeiXin()) {
       //   //如果是微信，跳应用宝
       //   window.location.href = "应用宝链接";
@@ -107,7 +118,7 @@ export default {
       } else {
         url = `kuaizhi://FeedDetailViewController?id=${this.$route.query.id}`;
       }
-      if (isChrome) {
+      if (isChrome||isUC) {
         //chrome浏览器用iframe打不开得直接去打开，算一个坑
         window.location.href = url;
       } else {
@@ -118,7 +129,7 @@ export default {
       var t = setTimeout(function() {
         var endTime = Date.now();
         if (!startTime || endTime - startTime < 600 + 200) {
-          // window.location.href = "www.baidu.com";
+          window.location.href = "https://www.coolapk.com/apk/app.kz_bot";
           // alert("请先下载app");
         }
       }, 600);
@@ -168,5 +179,6 @@ export default {
 <style lang="stylus" scoped>
 .img-tips {
   width: 100%;
+  background: #666666;
 }
 </style>
