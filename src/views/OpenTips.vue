@@ -106,7 +106,9 @@ export default {
       })();
       let openIframe = createIframe();
       let isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
-      let isUC = window.navigator.userAgent.indexOf("UCBrowser") !== -1 || window.navigator.userAgent.indexOf("UCWEB") !== -1;
+      let isUC =
+        window.navigator.userAgent.indexOf("UCBrowser") !== -1 ||
+        window.navigator.userAgent.indexOf("UCWEB") !== -1;
       // if (isWeiXin()) {
       //   //如果是微信，跳应用宝
       //   window.location.href = "应用宝链接";
@@ -118,7 +120,9 @@ export default {
       } else {
         url = `kuaizhi://FeedDetailViewController?id=${this.$route.query.id}`;
       }
-      if (isChrome||isUC) {
+      if (isUC) {
+        openIframe.src = url;
+      } else if (isChrome) {
         //chrome浏览器用iframe打不开得直接去打开，算一个坑
         window.location.href = url;
       } else {
