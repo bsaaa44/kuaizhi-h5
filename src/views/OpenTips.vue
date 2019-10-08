@@ -106,7 +106,7 @@ export default {
       })();
       let openIframe = createIframe();
       let isChrome = window.navigator.userAgent.indexOf("Chrome") !== -1;
-      let isUC = window.navigator.userAgent.indexOf("UCBrowser") !== -1;
+      let isUC = window.navigator.userAgent.indexOf("UCBrowser") !== -1 || window.navigator.userAgent.indexOf("UCWEB") !== -1;
       // if (isWeiXin()) {
       //   //如果是微信，跳应用宝
       //   window.location.href = "应用宝链接";
