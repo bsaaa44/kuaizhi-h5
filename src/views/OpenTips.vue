@@ -121,7 +121,6 @@ export default {
         url = `kuaizhi://FeedDetailViewController?id=${this.$route.query.id}`;
       }
       if (isUC) {
-        alert(window.navigator.userAgent)
         openIframe.src = url;
       } else if (isChrome) {
         //chrome浏览器用iframe打不开得直接去打开，算一个坑
